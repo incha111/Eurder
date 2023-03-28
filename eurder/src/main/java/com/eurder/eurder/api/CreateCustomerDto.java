@@ -1,27 +1,21 @@
-package com.eurder.eurder.domain;
+package com.eurder.eurder.api;
 
-public class Customer {
-    public static int counter = 0;
-    public final int id;
+import com.eurder.eurder.domain.Role;
+
+public class CreateCustomerDto {
     private final String firstname;
     private final String lastname;
     private final String email;
     private final String password;
-    protected final String address;
-    protected final String phone;
-
-    public Customer(String firstname, String lastname, String email, String password, String address, String phone) {
-        this.id = ++counter;
+    public final String address;
+    public final String phone;
+    public CreateCustomerDto(String firstname, String lastname, String email,  String address, String phone,String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
         this.address = address;
         this.phone = phone;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getFirstname() {
