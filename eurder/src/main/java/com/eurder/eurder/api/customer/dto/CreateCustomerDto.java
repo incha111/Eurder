@@ -1,6 +1,4 @@
-package com.eurder.eurder.api.dto;
-
-import com.eurder.eurder.domain.Role;
+package com.eurder.eurder.api.customer.dto;
 
 public class CreateCustomerDto {
     private final String firstname;

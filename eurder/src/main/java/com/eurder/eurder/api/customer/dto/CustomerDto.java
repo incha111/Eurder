@@ -1,17 +1,18 @@
-package com.eurder.eurder.domain;
+package com.eurder.eurder.api.customer.dto;
 
-public class Customer {
-    public static int counter = 0;
-    public final int id;
+import java.util.Objects;
+
+public class CustomerDto {
+    private final int id;
     private final String firstname;
     private final String lastname;
     private final String email;
     private final String password;
-    protected final String address;
-    protected final String phone;
+    public final String address;
+    public final String phone;
 
-    public Customer(String firstname, String lastname, String email, String password, String address, String phone) {
-        this.id = ++counter;
+    public CustomerDto(int id, String firstname, String lastname, String email, String password, String address, String phone) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -46,5 +47,18 @@ public class Customer {
 
     public String getPhone() {
         return phone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerDto that = (CustomerDto) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

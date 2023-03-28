@@ -1,7 +1,8 @@
 package com.eurder.eurder.service;
 
-import com.eurder.eurder.api.dto.CustomerDto;
-import com.eurder.eurder.domain.Customer;
+import com.eurder.eurder.api.customer.dto.CustomerDto;
+import com.eurder.eurder.domain.customer.Customer;
+import com.eurder.eurder.service.customer.CustomerMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

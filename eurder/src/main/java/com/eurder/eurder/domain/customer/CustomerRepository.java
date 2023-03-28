@@ -1,4 +1,4 @@
-package com.eurder.eurder.domain;
+package com.eurder.eurder.domain.customer;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,6 @@ public class CustomerRepository {
     private final List<Customer> customerList;
 
     public CustomerRepository() {
-
         customerList = new ArrayList<>();
         customerList.add(new Customer("Lisa","Koppens","Lisa.Koppens@gmail.com","123","my address", "my phone"));
     }

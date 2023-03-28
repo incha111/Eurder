@@ -1,9 +1,9 @@
-package com.eurder.eurder.service;
+package com.eurder.eurder.service.customer;
 
-import com.eurder.eurder.api.dto.CreateCustomerDto;
-import com.eurder.eurder.api.dto.CustomerDto;
-import com.eurder.eurder.domain.Customer;
-import com.eurder.eurder.domain.CustomerRepository;
+import com.eurder.eurder.api.customer.dto.CreateCustomerDto;
+import com.eurder.eurder.api.customer.dto.CustomerDto;
+import com.eurder.eurder.domain.customer.Customer;
+import com.eurder.eurder.domain.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +25,13 @@ public class CustomerService {
     }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto){
-                Customer customer = new Customer(
+        return customerMapper.toDto(customerRepository.save(new Customer(
                         createCustomerDto.getFirstname(),
                         createCustomerDto.getLastname(),
                         createCustomerDto.getEmail(),
                         createCustomerDto.getPassword(),
                         createCustomerDto.getAddress(),
                         createCustomerDto.getPhone()
-                );
-                return customerMapper.toDto(customerRepository.save(customer));
+                )));
     }
 }

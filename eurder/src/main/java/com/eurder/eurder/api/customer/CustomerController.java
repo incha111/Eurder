@@ -1,8 +1,8 @@
-package com.eurder.eurder.api;
+package com.eurder.eurder.api.customer;
 
-import com.eurder.eurder.api.dto.CreateCustomerDto;
-import com.eurder.eurder.api.dto.CustomerDto;
-import com.eurder.eurder.service.CustomerService;
+import com.eurder.eurder.api.customer.dto.CreateCustomerDto;
+import com.eurder.eurder.api.customer.dto.CustomerDto;
+import com.eurder.eurder.service.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
