@@ -1,21 +1,28 @@
-package com.eurder.eurder.api;
+package com.eurder.eurder.api.dto;
 
-import com.eurder.eurder.domain.Role;
+import java.util.Objects;
 
-public class CreateCustomerDto {
+public class CustomerDto {
+    private final int id;
     private final String firstname;
     private final String lastname;
     private final String email;
     private final String password;
     public final String address;
     public final String phone;
-    public CreateCustomerDto(String firstname, String lastname, String email,  String address, String phone,String password) {
+
+    public CustomerDto(int id, String firstname, String lastname, String email, String password, String address, String phone) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
         this.address = address;
         this.phone = phone;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFirstname() {
@@ -40,5 +47,18 @@ public class CreateCustomerDto {
 
     public String getPhone() {
         return phone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerDto that = (CustomerDto) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

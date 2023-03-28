@@ -1,6 +1,6 @@
 package com.eurder.eurder.service;
 
-import com.eurder.eurder.api.CustomerDto;
+import com.eurder.eurder.api.dto.CustomerDto;
 import com.eurder.eurder.domain.Customer;
 import org.springframework.stereotype.Component;
 
