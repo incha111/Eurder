@@ -1,6 +1,8 @@
 package com.eurder.eurder.domain.customer;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,12 @@ public class CustomerRepository {
     public List<Customer> getAllCustomers(){
         return customerList.stream()
                 .collect(Collectors.toList());
+    }
+    public Customer getCustomerById(int customerId){
+        return customerList.stream()
+                .filter(c -> c.getCustomerId() == customerId)
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"No Customer found for id " + customerId));
     }
 
     public Customer save(Customer customer){

@@ -3,29 +3,33 @@ package com.eurder.eurder.domain.item;
 import java.time.LocalDate;
 
 public class ItemGroup {
-    public static final int SHIPPINGDAYS_WHEN_ITEM_IS_IN_STOCK = 1;
-    public static final int SHIPPINGDAYS_WHEN_ITEM_IS_NOT_IN_STOCK = 7;
+
     private static int counter;
     private final int ItemGroupId;
-    private final Item selectedItem;
+    //private final Item selectedItem;
+    private final Item item;
     private final int orderedItemAmount;
-    private LocalDate shippingDate;
-    private double groupPrice;
+    private final LocalDate shippingDate;
+    private final double groupPrice;
 
-    public ItemGroup(Item selectedItem, int orderedItemAmount) {
+    public ItemGroup(Item item, int orderedItemAmount, LocalDate shippingDate, double groupPrice) {
         this.ItemGroupId = ++counter;
-        this.selectedItem = selectedItem;
+        this.item = item;
         this.orderedItemAmount = orderedItemAmount;
-        this.shippingDate = calculateShippingDate();
-        this.groupPrice = calculateGroupPrice();
+        this.shippingDate = shippingDate;
+        this.groupPrice = groupPrice;
     }
 
     public int getItemGroupId() {
         return ItemGroupId;
     }
 
-    public Item getSelectedItem() {
-        return selectedItem;
+    public Item getItem() {
+        return item;
+    }
+
+    public int getOrderedItemAmount() {
+        return orderedItemAmount;
     }
 
     public LocalDate getShippingDate() {
@@ -34,17 +38,6 @@ public class ItemGroup {
 
     public double getGroupPrice() {
         return groupPrice;
-    }
-
-    private LocalDate calculateShippingDate(){
-        if(selectedItem.getStockAmount() >= this.orderedItemAmount){
-            return shippingDate.plusDays(SHIPPINGDAYS_WHEN_ITEM_IS_IN_STOCK);
-        } else {
-            return shippingDate.plusDays(SHIPPINGDAYS_WHEN_ITEM_IS_NOT_IN_STOCK);
-        }
-    }
-    private double calculateGroupPrice(){
-        return selectedItem.getPrice() * orderedItemAmount;
     }
 
 }
