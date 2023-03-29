@@ -2,6 +2,7 @@ package com.eurder.eurder.api.item;
 
 import com.eurder.eurder.api.item.dto.CreateItemDto;
 import com.eurder.eurder.api.item.dto.ItemDto;
+import com.eurder.eurder.api.item.dto.UpdateItemDto;
 import com.eurder.eurder.service.Item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,5 +29,16 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDto createItem(@RequestBody CreateItemDto createItemDto){
         return itemService.createItem(createItemDto);
+    }
+    @RequestMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ItemDto getItemById(@PathVariable int id){
+        return itemService.getItemById(id);
+    }
+
+    @PutMapping("{id}/update")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ItemDto updateItem(@PathVariable int id, @RequestBody UpdateItemDto updateItemDto){
+        return itemService.updateItem(id,updateItemDto);
     }
 }

@@ -1,19 +1,19 @@
 package com.eurder.eurder.api.item.dto;
 
 public class CreateItemDto {
-    private final int name;
+    private final String name;
     private String description;
     private double price;
     private int stockAmount;
 
-    public CreateItemDto(int name, String description, double price, int stockAmount) {
+    public CreateItemDto(String name, String description, double price, int stockAmount) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockAmount = stockAmount;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 

@@ -26,7 +26,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void getAllCustomer_verifyMethodGetAllCustomerIsCalledOnCustomerService() {
+    void getAllCustomers_verifyMethodGetAllCustomerIsCalledOnCustomerService() {
         //given
         //when
         customerService.getAllCustomers();
@@ -36,7 +36,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void getAllCustomer_givenAListOfCustomer_returnAListOfCustomerDto() {
+    void getAllCustomers_givenAListOfCustomer_returnAListOfCustomerDto() {
         //given
         Customer customer1 = new Customer("Louis","Koppens","louis.Koppens@gmail.com","123","BeCentral 2","123456");
         Customer customer2 = new Customer("Lisa","Martens","lisa.martens@gmail.com","123","BeCentral 1","654321");

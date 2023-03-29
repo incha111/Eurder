@@ -2,6 +2,7 @@ package com.eurder.eurder.service.Item;
 
 import com.eurder.eurder.api.item.dto.CreateItemDto;
 import com.eurder.eurder.api.item.dto.ItemDto;
+import com.eurder.eurder.api.item.dto.UpdateItemDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,18 @@ public class ItemService {
                 createItemDto.getPrice(),
                 createItemDto.getStockAmount()
         )));
+    }
+
+    public ItemDto getItemById(int id) {
+        return itemMapper.toDto(itemRepository.getItemById(id));
+    }
+    public ItemDto updateItem(int id, UpdateItemDto updateItemDto){
+        Item item = itemRepository.getItemById(id);
+        item.changeName(updateItemDto.getName());
+        item.changeDescription(updateItemDto.getDescription());
+        item.changePrice(updateItemDto.getPrice());
+        item.changeStockAmount(updateItemDto.getStockAmount());
+
+        return itemMapper.toDto(itemRepository.updateItem(item));
     }
 }

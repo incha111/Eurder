@@ -1,13 +1,15 @@
 package com.eurder.eurder.api.item.dto;
 
+import java.util.Objects;
+
 public class ItemDto {
     private final int id;
-    private final int name;
+    private final String name;
     private String description;
     private double price;
     private int stockAmount;
 
-    public ItemDto(int id, int name, String description, double price, int stockAmount) {
+    public ItemDto(int id, String name, String description, double price, int stockAmount) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -19,7 +21,7 @@ public class ItemDto {
         return id;
     }
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
@@ -43,5 +45,18 @@ public class ItemDto {
     }
     public void changeStockAmount(int stockAmount){
         this.stockAmount = stockAmount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemDto itemDto = (ItemDto) o;
+        return id == itemDto.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

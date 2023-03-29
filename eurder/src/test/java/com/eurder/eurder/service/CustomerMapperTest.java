@@ -13,7 +13,7 @@ class CustomerMapperTest {
     CustomerMapper customerMapper;
 
     @BeforeEach
-    void setUp() {
+    void setUpCustomerMapper() {
         customerMapper = new CustomerMapper();
     }
 

@@ -2,7 +2,7 @@ package com.eurder.eurder.domain.customer;
 
 public class Customer {
     public static int counter = 0;
-    public final int id;
+    public final int customerId;
     private final String firstname;
     private final String lastname;
     private final String email;
@@ -11,7 +11,7 @@ public class Customer {
     protected final String phone;
 
     public Customer(String firstname, String lastname, String email, String password, String address, String phone) {
-        this.id = ++counter;
+        this.customerId = ++counter;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -20,8 +20,8 @@ public class Customer {
         this.phone = phone;
     }
 
-    public int getId() {
-        return id;
+    public int getCustomerId() {
+        return customerId;
     }
 
     public String getFirstname() {
