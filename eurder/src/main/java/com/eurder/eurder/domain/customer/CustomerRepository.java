@@ -14,7 +14,7 @@ public class CustomerRepository {
 
     public CustomerRepository() {
         customerList = new ArrayList<>();
-        customerList.add(new Customer("Lisa","Koppens","Lisa.Koppens@gmail.com","123","my address", "my phone"));
+        //customerList.add(new Customer("Lisa","Koppens","Lisa.Koppens@gmail.com","123","my address", "my phone"));
     }
 
     public List<Customer> getAllCustomers(){
@@ -23,7 +23,7 @@ public class CustomerRepository {
     }
     public Customer getCustomerById(int customerId){
         return customerList.stream()
-                .filter(c -> c.getCustomerId() == customerId)
+                .filter(c -> c.getId() == customerId)
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"No Customer found for id " + customerId));
     }

@@ -12,7 +12,7 @@ public class ItemMapper {
 
     public ItemDto toDto(Item item){
         return new ItemDto(
-                item.getItemId(),
+                item.getId(),
                 item.getName(),
                 item.getDescription(),
                 item.getPrice(),

@@ -6,6 +6,7 @@ import com.eurder.eurder.domain.item.ItemGroup;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderDto {
     private final int orderId;
@@ -42,4 +43,16 @@ public class OrderDto {
         return totalPrice;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderDto orderDto = (OrderDto) o;
+        return orderId == orderDto.orderId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId);
+    }
 }

@@ -20,7 +20,7 @@ public class OrderRepository {
     }
     public Order getOrderById(int orderId){
         return orderList.stream()
-                .filter(o -> o.getOrderId() == orderId)
+                .filter(o -> o.getId() == orderId)
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"No order found for order id " + orderId));
     }

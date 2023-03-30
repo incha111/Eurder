@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class OrderMapper {
     public OrderDto toDto(Order order){
         return new OrderDto(
-                order.getOrderId(),
+                order.getId(),
                 order.getCustomerId(),
                 order.getItemGroupList(),
                 order.getOrderDate(),

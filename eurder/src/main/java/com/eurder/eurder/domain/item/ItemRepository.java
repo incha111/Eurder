@@ -15,8 +15,8 @@ public class ItemRepository {
     public ItemRepository() {
 
         itemList = new ArrayList<>();
-        itemList.add(new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7));
-        itemList.add(new Item("Ping pong ball","Package of 6 balls",2.0,10));
+        //itemList.add(new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7));
+        //itemList.add(new Item("Ping pong ball","Package of 6 balls",2.0,10));
 
     }
     public List<Item> getAllItems(){
@@ -25,7 +25,7 @@ public class ItemRepository {
     }
     public Item getItemById(int id) {
         return itemList.stream()
-                .filter(i -> i.getItemId() == id)
+                .filter(i -> i.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Item not found for id " + id));
     }
@@ -37,9 +37,9 @@ public class ItemRepository {
 
     public Item updateItem(Item item){
         return itemList.stream()
-                .filter(i -> i.getItemId() == item.getItemId())
+                .filter(i -> i.getId() == item.getId())
                 .map(i -> itemList.set(itemList.indexOf(item),item))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"No item found to update for id " + item.getItemId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"No item found to update for id " + item.getId()));
     }
 }

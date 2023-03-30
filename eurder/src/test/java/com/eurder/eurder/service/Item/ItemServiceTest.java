@@ -1,6 +1,5 @@
 package com.eurder.eurder.service.Item;
 
-import com.eurder.eurder.api.item.dto.CreateItemDto;
 import com.eurder.eurder.api.item.dto.ItemDto;
 import com.eurder.eurder.api.item.dto.UpdateItemDto;
 import com.eurder.eurder.domain.item.Item;
@@ -12,8 +11,6 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ItemServiceTest {
     ItemRepository itemRepositoryMock;
@@ -87,6 +84,22 @@ class ItemServiceTest {
         Assertions.assertThat(itemDto.getPrice()).isEqualTo(itemService.getItemById(id).getPrice());
         Assertions.assertThat(itemDto.getStockAmount()).isEqualTo(itemService.getItemById(id).getStockAmount());
     }
+
+    @Test
+    void updateItem_verifyMethodUpdateItemIsCalledOnItemService() {
+        //given
+        ItemMapper itemMapper = new ItemMapper();
+        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7);
+        UpdateItemDto updateItemDto1 = new UpdateItemDto("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",15.0,7);
+        Mockito.when(itemRepositoryMock.getItemById(item1.getId()))
+                .thenReturn(item1);
+        //when
+        itemService.updateItem(item1.getId(),updateItemDto1);
+
+        //then
+        Mockito.verify(itemRepositoryMock).updateItem(item1);
+    }
+
 
     // test for save!!!!!
 }

@@ -1,8 +1,11 @@
 package com.eurder.eurder.domain.customer;
 
+import java.util.Objects;
+
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer {
     public static int counter = 0;
-    public final int customerId;
+    public final int id;
     private final String firstname;
     private final String lastname;
     private final String email;
@@ -11,7 +14,7 @@ public class Customer {
     protected final String phone;
 
     public Customer(String firstname, String lastname, String email, String password, String address, String phone) {
-        this.customerId = ++counter;
+        this.id = ++counter;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -20,8 +23,8 @@ public class Customer {
         this.phone = phone;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public int getId() {
+        return id;
     }
 
     public String getFirstname() {
@@ -46,5 +49,18 @@ public class Customer {
 
     public String getPhone() {
         return phone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return id == customer.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

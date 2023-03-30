@@ -1,23 +1,25 @@
 package com.eurder.eurder.domain.item;
 
+import java.util.Objects;
+
 public class Item {
     public static int counter;
-    private final int itemId;
+    private final int id;
     private String name;
     private String description;
     private double price;
     private int stockAmount;
 
     public Item(String name, String description, double price, int stockAmount) {
-        this.itemId = ++counter;
+        this.id = ++counter;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockAmount = stockAmount;
     }
 
-    public int getItemId() {
-        return itemId;
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -49,5 +51,16 @@ public class Item {
         this.stockAmount = stockAmount;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return id == item.id;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

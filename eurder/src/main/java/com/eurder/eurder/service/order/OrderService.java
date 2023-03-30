@@ -3,14 +3,11 @@ package com.eurder.eurder.service.order;
 import com.eurder.eurder.api.item.dto.CreateItemGroupDto;
 import com.eurder.eurder.api.order.CreateOrderDto;
 import com.eurder.eurder.api.order.OrderDto;
-import com.eurder.eurder.domain.customer.CustomerRepository;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.ItemRepository;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
-import com.eurder.eurder.service.Item.ItemService;
-import com.eurder.eurder.service.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,19 +21,19 @@ public class OrderService {
     public static final int SHIPPINGDAYS_WHEN_ITEM_IS_NOT_IN_STOCK = 7;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final CustomerService customerService;
-    private final ItemService itemService;
+    //private final CustomerService customerService;
+   // private final ItemService itemService;
     private final ItemRepository itemRepository;
-    private final CustomerRepository customerRepository;
+    //private final CustomerRepository customerRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CustomerService customerService, ItemService itemService, ItemRepository itemRepository, CustomerRepository customerRepository) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ItemRepository itemRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
-        this.customerService = customerService;
-        this.itemService = itemService;
+        //this.customerService = customerService;
+        //this.itemService = itemService;
         this.itemRepository = itemRepository;
-        this.customerRepository = customerRepository;
+        //this.customerRepository = customerRepository;
     }
 
     public List<OrderDto> getAllOrders(){
@@ -62,7 +59,7 @@ public class OrderService {
         List<CreateItemGroupDto> createItemGroupDtoList = createOrderDto.getCreateItemGroupDto();
 
         for(CreateItemGroupDto createItemGroupDto : createItemGroupDtoList){
-            Item item = itemRepository.getItemById(createItemGroupDto.getItemId());
+            Item item = itemRepository.getItemById(createItemGroupDto.getId());
             //new itemGroup
             ItemGroup orderItemGroup = new ItemGroup(
                     item,

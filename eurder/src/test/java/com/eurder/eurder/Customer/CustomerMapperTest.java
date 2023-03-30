@@ -1,4 +1,4 @@
-package com.eurder.eurder.service;
+package com.eurder.eurder.Customer;
 
 import com.eurder.eurder.api.customer.dto.CustomerDto;
 import com.eurder.eurder.domain.customer.Customer;

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Order {
     private static int counter;
-    private final int orderId;
+    private final int id;
     private final List<ItemGroup> itemGroupList;
     //private final Customer customer;
     private final int customerId;
@@ -15,15 +15,15 @@ public class Order {
     private final double totalPrice;
 
     public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList, double totalPrice) {
-        this.orderId = ++counter;
+        this.id = ++counter;
         this.orderDate = orderDate;
         this.customerId = customerId;
         this.itemGroupList = itemGroupList;
         this.totalPrice = totalPrice;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public int getId() {
+        return id;
     }
 
     public List<ItemGroup> getItemGroupList() {

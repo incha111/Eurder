@@ -1,4 +1,4 @@
-package com.eurder.eurder.service;
+package com.eurder.eurder.Customer;
 
 import com.eurder.eurder.api.customer.dto.CustomerDto;
 import com.eurder.eurder.domain.customer.Customer;
@@ -53,7 +53,55 @@ class CustomerServiceTest {
         Assertions.assertThat(actual).isEqualTo(customerService.getAllCustomers());
     }
 
+    @Test
+    void getCustomerById_verifyMethodGetCustomerByIdIsCalledOnCustomerService() {
+        //given
+        int customerId = 1;
+
+        //when
+        customerService.getCustomerById(customerId);
+
+        //then
+        Mockito.verify(customerRepositoryMock).getCustomerById(customerId);
+
+    }
+    @Test
+    void getCustomerById_givingACustomerId_thenReturnsThatCustomer() {
+        //given
+        Customer customer1 = new Customer("Louis","Koppens","louis.Koppens@gmail.com","123","BeCentral 2","123456");
+        Customer customer2 = new Customer("Lisa","Martens","lisa.martens@gmail.com","123","BeCentral 1","654321");
+        Mockito.when(customerRepositoryMock.getCustomerById(customer1.getId()))
+                .thenReturn(customer1);
+
+        //when
+        Customer customer = customerRepositoryMock.getCustomerById(customer1.getId());
+
+        //then
+        Assertions.assertThat(customer).isEqualTo(customerRepositoryMock.getCustomerById(customer1.getId()));
+    }
+
 //    @Test
+//    void createCustomer_verifyMethodCreateCustomerIsCalledOnCustomerService() {
+//
+//    }
+//    @Test
+//    void createCustomer_givenACustomerToCreate_thenReturnThatCustomer() {
+//        //given
+//        CreateCustomerDto createCustomerDto = new CreateCustomerDto(
+//                "Louis",
+//                "Koppens",
+//                "louis.Koppens@gmail.com",
+//                "123",
+//                "BeCentral 2",
+//                "123456"
+//        );
+//
+//        //when
+//
+//
+//    }
+
+    //    @Test
 //    void save_verifySaveMethodIsCalledOnCustomerService() {
 //        //given
 //        CustomerMapper customerMapper = new CustomerMapper();

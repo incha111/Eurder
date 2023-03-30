@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class CustomerMapper {
     public CustomerDto toDto(Customer customer){
         return new CustomerDto(
-                customer.getCustomerId(),
+                customer.getId(),
                 customer.getFirstname(),
                 customer.getLastname(),
                 customer.getEmail(),
