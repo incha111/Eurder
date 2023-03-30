@@ -25,6 +25,11 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
 
+    @GetMapping("{customerId}")
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDto getCustomerById(@PathVariable int customerId){
+        return customerService.getCustomerById(customerId);
+    }
     @PostMapping(value = "register",produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDto createCustomer( @RequestBody CreateCustomerDto createCustomerDto){

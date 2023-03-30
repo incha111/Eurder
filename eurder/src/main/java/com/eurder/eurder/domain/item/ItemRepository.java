@@ -23,19 +23,18 @@ public class ItemRepository {
         return itemList.stream()
                 .collect(Collectors.toList());
     }
-
-    public Item save(Item item){
-        itemList.add(item);
-        return item;
-    }
-
-
     public Item getItemById(int id) {
         return itemList.stream()
                 .filter(i -> i.getItemId() == id)
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Item not found for id " + id));
     }
+
+    public Item save(Item item){
+        itemList.add(item);
+        return item;
+    }
+
     public Item updateItem(Item item){
         return itemList.stream()
                 .filter(i -> i.getItemId() == item.getItemId())

@@ -47,10 +47,18 @@ public class OrderService {
     }
 
     public OrderDto createOrder(CreateOrderDto createOrderDto){
-        LocalDate orderDate = createOrderDto.getOrderDate();
-        //Customer customer = customerRepository.getCustomerById(createOrderDto.getCustomerId());
+        List<ItemGroup> itemGroupList = createOrderItemGroupList(createOrderDto);
 
-        List<ItemGroup> newItemGroupList = new ArrayList<>();
+        Order order = new Order(
+                createOrderDto.getOrderDate(),
+                createOrderDto.getCustomerId(),
+                itemGroupList,
+                calculateTotalPrice(itemGroupList));
+
+        return orderMapper.toDto(orderRepository.save(order));
+    }
+    private List<ItemGroup> createOrderItemGroupList(CreateOrderDto createOrderDto){
+        List<ItemGroup> itemGroupList = new ArrayList<>();
         List<CreateItemGroupDto> createItemGroupDtoList = createOrderDto.getCreateItemGroupDto();
 
         for(CreateItemGroupDto createItemGroupDto : createItemGroupDtoList){
@@ -59,26 +67,27 @@ public class OrderService {
             ItemGroup orderItemGroup = new ItemGroup(
                     item,
                     createItemGroupDto.getOrderedItemAmount(),
-                    calculateShippingDate(item,createItemGroupDto,orderDate),
+                    calculateShippingDate(item,createItemGroupDto,createOrderDto.getOrderDate()),
                     calculateGroupPrice(item,createItemGroupDto)
             );
-            newItemGroupList.add(orderItemGroup);
+            itemGroupList.add(orderItemGroup);
+            updateItemStockAmount(item,createItemGroupDto);
         }
 
-        Order order = new Order(
-                createOrderDto.getOrderDate(),
-                createOrderDto.getCustomerId(),
-                newItemGroupList,
-                calculateTotalPrice(newItemGroupList));
-        return orderMapper.toDto(orderRepository.save(order));
+        return itemGroupList;
     }
 
     private LocalDate calculateShippingDate(Item item, CreateItemGroupDto createItemGroupDto,LocalDate orderDate){
-        if(item.getStockAmount() >= createItemGroupDto.getOrderedItemAmount()){
+        if(isItemInStock(item,createItemGroupDto)){
             return orderDate.plusDays(SHIPPINGDAYS_WHEN_ITEM_IS_IN_STOCK);
-        } else {
-            return orderDate.plusDays(SHIPPINGDAYS_WHEN_ITEM_IS_NOT_IN_STOCK);
         }
+        return orderDate.plusDays(SHIPPINGDAYS_WHEN_ITEM_IS_NOT_IN_STOCK);
+    }
+    private boolean isItemInStock(Item item,CreateItemGroupDto createItemGroupDto){
+        if(item.getStockAmount() >= createItemGroupDto.getOrderedItemAmount()){
+            return true;
+        }
+        return false;
     }
     private double calculateGroupPrice(Item item, CreateItemGroupDto createItemGroupDto){
         return item.getPrice() * createItemGroupDto.getOrderedItemAmount();
@@ -88,5 +97,13 @@ public class OrderService {
         return newItemGroupList.stream()
                 .map(i -> i.getGroupPrice())
                 .reduce(0.0, (a,b) -> a + b);
+    }
+
+
+    private void updateItemStockAmount(Item item,CreateItemGroupDto createItemGroupDto){
+        if(isItemInStock(item,createItemGroupDto)){
+            item.changeStockAmount(item.getStockAmount() - createItemGroupDto.getOrderedItemAmount());
+            itemRepository.updateItem(item);
+        }
     }
 }

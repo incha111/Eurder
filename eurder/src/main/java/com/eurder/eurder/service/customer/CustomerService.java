@@ -23,6 +23,9 @@ public class CustomerService {
     public List<CustomerDto> getAllCustomers(){
         return customerMapper.toDto(customerRepository.getAllCustomers());
     }
+    public CustomerDto getCustomerById(int customerId){
+        return customerMapper.toDto(customerRepository.getCustomerById(customerId));
+    }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto){
         return customerMapper.toDto(customerRepository.save(new Customer(
