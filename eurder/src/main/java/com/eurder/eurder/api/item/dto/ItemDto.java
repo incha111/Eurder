@@ -1,5 +1,7 @@
 package com.eurder.eurder.api.item.dto;
 
+import com.eurder.eurder.domain.item.UrgencyIndicator;
+
 import java.util.Objects;
 
 public class ItemDto {
@@ -8,13 +10,15 @@ public class ItemDto {
     private String description;
     private double price;
     private int stockAmount;
+    private UrgencyIndicator urgencyIndicator;
 
-    public ItemDto(int id, String name, String description, double price, int stockAmount) {
+    public ItemDto(int id, String name, String description, double price, int stockAmount, UrgencyIndicator urgencyIndicator) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockAmount = stockAmount;
+        this.urgencyIndicator = urgencyIndicator;
     }
 
     public int getId() {
@@ -36,6 +40,11 @@ public class ItemDto {
     public int getStockAmount() {
         return stockAmount;
     }
+
+    public UrgencyIndicator getUrgencyIndicator() {
+        return urgencyIndicator;
+    }
+
     public void changeDescription(String description){
         this.description = description;
     }

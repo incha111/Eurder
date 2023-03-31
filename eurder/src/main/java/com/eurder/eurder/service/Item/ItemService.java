@@ -30,7 +30,8 @@ public class ItemService {
                 createItemDto.getName(),
                 createItemDto.getDescription(),
                 createItemDto.getPrice(),
-                createItemDto.getStockAmount()
+                createItemDto.getStockAmount(),
+                itemMapper.changeUrgencyIndicator(createItemDto.getStockAmount())
         )));
     }
 

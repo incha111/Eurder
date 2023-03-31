@@ -1,5 +1,7 @@
 package com.eurder.eurder.api.item.dto;
 
+import com.eurder.eurder.domain.item.UrgencyIndicator;
+
 public class CreateItemDto {
     private final String name;
     private String description;

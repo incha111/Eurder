@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,15 +14,22 @@ public class ItemRepository {
     private final List<Item> itemList;
 
     public ItemRepository() {
-
         itemList = new ArrayList<>();
-        //itemList.add(new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7));
-        //itemList.add(new Item("Ping pong ball","Package of 6 balls",2.0,10));
-
     }
     public List<Item> getAllItems(){
+        Comparator<Item> compareByUrgencyIndicatorAndByStockAmount = Comparator
+                .comparing(Item::getUrgencyIndicator)
+                .thenComparing(Item::getStockAmount);
         return itemList.stream()
+                .sorted(compareByUrgencyIndicatorAndByStockAmount)
                 .collect(Collectors.toList());
+                /*.sorted((i1,i2) -> {
+                    if(i1.getUrgencyIndicator().getUrgencyLevel() > i2.getUrgencyIndicator().getUrgencyLevel()) return 1;
+                    if(i1.getUrgencyIndicator().getUrgencyLevel() < i2.getUrgencyIndicator().getUrgencyLevel()) return -1;
+                    return 0;
+                })
+                .sorted(Comparator.comparing(i -> (i.getUrgencyIndicator().getUrgencyLevel())))
+                .collect(Collectors.toList());*/
     }
     public Item getItemById(int id) {
         return itemList.stream()

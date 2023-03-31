@@ -23,13 +23,14 @@ class OrderServiceTest {
     OrderRepository orderRepositoryMock;
     ItemRepository itemRepositoryMock;
     OrderMapper orderMapperMock;
+    ItemMapper itemMapperMock;
 
     @BeforeEach
     void setUp() {
         orderRepositoryMock = Mockito.mock(OrderRepository.class);
         itemRepositoryMock = Mockito.mock(ItemRepository.class);
         orderMapperMock = Mockito.mock(OrderMapper.class);
-        orderService = new OrderService(orderRepositoryMock, orderMapperMock, itemRepositoryMock);
+        orderService = new OrderService(orderRepositoryMock, orderMapperMock, itemMapperMock, itemRepositoryMock);
     }
 
     @Test

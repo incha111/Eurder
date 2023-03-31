@@ -9,6 +9,7 @@ import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.ItemRepository;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
+import com.eurder.eurder.service.Item.ItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,14 @@ public class OrderService {
     public static final int SHIPPINGDAYS_WHEN_ITEM_IS_NOT_IN_STOCK = 7;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final ItemMapper itemMapper;
     private final ItemRepository itemRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ItemRepository itemRepository) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ItemMapper itemMapper, ItemRepository itemRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
+        this.itemMapper = itemMapper;
         this.itemRepository = itemRepository;
     }
 
@@ -67,7 +70,7 @@ public class OrderService {
 
         for(CreateItemGroupDto createItemGroupDto : createItemGroupDtoList){
             Item item = itemRepository.getItemById(createItemGroupDto.getId());
-            Item itemCopy = new Item(item.getName(),item.getDescription(),item.getPrice(),item.getStockAmount());
+            Item itemCopy = new Item(item.getId(),item.getName(),item.getDescription(),item.getPrice(),item.getStockAmount(),item.getUrgencyIndicator());
             //new itemGroup
             ItemGroup orderItemGroup = new ItemGroup(
                     itemCopy,
@@ -111,6 +114,7 @@ public class OrderService {
         } else {
             item.changeStockAmount(0);
         }
+        itemMapper.changeUrgencyIndicator(item.getStockAmount());
         itemRepository.updateItem(item);
 
     }
