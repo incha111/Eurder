@@ -1,4 +1,4 @@
-package com.eurder.eurder.api.order;
+package com.eurder.eurder.api.order.dto;
 
 import com.eurder.eurder.api.item.dto.CreateItemGroupDto;
 import com.eurder.eurder.domain.customer.Customer;

@@ -1,13 +1,14 @@
 package com.eurder.eurder.service.order;
 
 import com.eurder.eurder.api.item.dto.CreateItemGroupDto;
-import com.eurder.eurder.api.order.CreateOrderDto;
-import com.eurder.eurder.api.order.OrderDto;
+import com.eurder.eurder.api.order.dto.CreateOrderDto;
+import com.eurder.eurder.api.order.dto.OrderDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.ItemRepository;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
+import com.eurder.eurder.service.Item.ItemMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,7 +103,7 @@ class OrderServiceTest {
     @Test
     void getOrderById_givingAnOrderId_returnsThatOrder() {
         //given
-        OrderMapper orderMapper = new OrderMapper();
+        OrderMapper orderMapper = new OrderMapper(new ItemMapper());
         Item item1 = new Item("paprika chips","paprika chips",1.5,5);
         Item item2 = new Item("pickels chips","pickels chips",1.5,7);
         Item item3 = new Item("dark chocolate","dark chocolate",2.3,10);
@@ -128,13 +129,13 @@ class OrderServiceTest {
         orderList.add(order2);
 
 
-        Mockito.when(orderRepositoryMock.getOrderById(order1.getId()))
+        Mockito.when(orderRepositoryMock.getOrderById(order1.getOrderId()))
                 .thenReturn(order2);
-        Mockito.when(orderService.getOrderById(order1.getId()))
+        Mockito.when(orderService.getOrderById(order1.getOrderId()))
                 .thenReturn(orderMapper.toDto(order1));
 
         //when
-        OrderDto orderDto = orderService.getOrderById(order1.getId());
+        OrderDto orderDto = orderService.getOrderById(order1.getOrderId());
 
         //then
         Assertions.assertThat(orderDto).isEqualTo(orderMapper.toDto(order1));
@@ -142,7 +143,7 @@ class OrderServiceTest {
     @Test
     void createOrder_VerifyMethodCreateOrderIsCalledOnOrderService() {
         //given
-        OrderMapper orderMapper = new OrderMapper();
+        OrderMapper orderMapper = new OrderMapper(new ItemMapper());
         Item item1 = new Item("paprika chips","paprika chips",1.5,5);
         Item item2 = new Item("pickels chips","pickels chips",1.5,7);
 
@@ -180,7 +181,7 @@ class OrderServiceTest {
     void createOrder_givingAnOrderId_returnsThatOrder() {
         //given
         int orderId = 1;
-        OrderMapper orderMapper = new OrderMapper();
+        OrderMapper orderMapper = new OrderMapper(new ItemMapper());
         Item item1 = new Item("paprika chips","paprika chips",1.5,5);
         Item item2 = new Item("pickels chips","pickels chips",1.5,7);
 

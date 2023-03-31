@@ -4,10 +4,11 @@ import com.eurder.eurder.domain.item.ItemGroup;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class Order {
     private static int counter;
-    private final int id;
+    private final int orderId;
     private final List<ItemGroup> itemGroupList;
     //private final Customer customer;
     private final int customerId;
@@ -15,15 +16,15 @@ public class Order {
     private final double totalPrice;
 
     public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList, double totalPrice) {
-        this.id = ++counter;
+        this.orderId = ++counter;
         this.orderDate = orderDate;
         this.customerId = customerId;
         this.itemGroupList = itemGroupList;
         this.totalPrice = totalPrice;
     }
 
-    public int getId() {
-        return id;
+    public int getOrderId() {
+        return orderId;
     }
 
     public List<ItemGroup> getItemGroupList() {
@@ -42,7 +43,19 @@ public class Order {
         return totalPrice;
     }
 
-    public void addItemGroup(ItemGroup itemGroup){
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return orderId == order.orderId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId);
+    }
+    /*public void addItemGroup(ItemGroup itemGroup){
         itemGroupList.add(itemGroup);
     }
 
@@ -50,5 +63,5 @@ public class Order {
         return itemGroupList.stream()
                 .map(i -> i.getGroupPrice())
                 .reduce(0.0,(a,b) -> a + b);
-    }
+    }*/
 }

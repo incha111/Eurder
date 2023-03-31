@@ -1,7 +1,9 @@
 package com.eurder.eurder.service.Item;
 
 import com.eurder.eurder.api.item.dto.ItemDto;
+import com.eurder.eurder.api.item.dto.ViewItemGroupReport;
 import com.eurder.eurder.domain.item.Item;
+import com.eurder.eurder.domain.item.ItemGroup;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,4 +27,18 @@ public class ItemMapper {
                 .map(i -> toDto(i))
                 .collect(Collectors.toList());
     }
+
+    public ViewItemGroupReport toViewDto(ItemGroup itemGroup){
+        return new ViewItemGroupReport(
+                itemGroup.getItem().getName(),
+                itemGroup.getOrderedItemAmount(),
+                itemGroup.getGroupPrice()
+        );
+    }
+    public List<ViewItemGroupReport> toViewDto(List<ItemGroup> itemGroupList){
+        return itemGroupList.stream()
+                .map(i -> toViewDto(i))
+                .collect(Collectors.toList());
+    }
+
 }

@@ -1,10 +1,8 @@
-package com.eurder.eurder.api.order;
+package com.eurder.eurder.api.order.dto;
 
-import com.eurder.eurder.domain.customer.Customer;
 import com.eurder.eurder.domain.item.ItemGroup;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,7 +29,7 @@ public class OrderDto {
         return itemGroupList;
     }
 
-    public int getCustomer() {
+    public int getCustomerId() {
         return customerId;
     }
 

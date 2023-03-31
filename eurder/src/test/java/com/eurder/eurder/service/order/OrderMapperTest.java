@@ -1,11 +1,11 @@
 package com.eurder.eurder.service.order;
 
-import com.eurder.eurder.api.order.OrderDto;
+import com.eurder.eurder.api.order.dto.OrderDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.order.Order;
+import com.eurder.eurder.service.Item.ItemMapper;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +13,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class OrderMapperTest {
     OrderMapper orderMapper;
 
     @BeforeEach
     void setUpOrderMapperTest() {
-        orderMapper = new OrderMapper();
+        orderMapper = new OrderMapper(new ItemMapper());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.eurder.eurder.api.order;
 
 import com.eurder.eurder.api.item.dto.CreateItemGroupDto;
+import com.eurder.eurder.api.order.dto.CreateOrderDto;
 import com.eurder.eurder.domain.customer.Customer;
 import com.eurder.eurder.domain.customer.CustomerRepository;
 import com.eurder.eurder.domain.item.Item;
@@ -65,7 +66,7 @@ class OrderControllerIntegrationTest {
                 .log().all()
                 .when()
                 .port(port)
-                .get("/orders/" + order1.getId()) // http://localhost:???/orders/1
+                .get("/orders/" + order1.getOrderId()) // http://localhost:???/orders/1
                 // THEN
                 .then()
                 .log().all()
@@ -77,7 +78,7 @@ class OrderControllerIntegrationTest {
         Assertions.assertThat(order).isEqualTo(order1);
     }
     @Test
-    void whenIPostAnOrder_thenTheRepositoryContainsThisOrder() {
+    void whenIPostAnOrder_thenTheRepositoryContainsThisOrder() throws CloneNotSupportedException {
         Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2);
         Item item2 = new Item("Ping pong ballen","Ping pong ballen (per 6)",2,2);
         itemRepository.save(item1);

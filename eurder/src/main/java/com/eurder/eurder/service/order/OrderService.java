@@ -1,8 +1,9 @@
 package com.eurder.eurder.service.order;
 
 import com.eurder.eurder.api.item.dto.CreateItemGroupDto;
-import com.eurder.eurder.api.order.CreateOrderDto;
-import com.eurder.eurder.api.order.OrderDto;
+import com.eurder.eurder.api.order.dto.CreateOrderDto;
+import com.eurder.eurder.api.order.dto.OrderDto;
+import com.eurder.eurder.api.order.dto.ViewOrderReportDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.ItemRepository;
@@ -21,19 +22,13 @@ public class OrderService {
     public static final int SHIPPINGDAYS_WHEN_ITEM_IS_NOT_IN_STOCK = 7;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    //private final CustomerService customerService;
-   // private final ItemService itemService;
     private final ItemRepository itemRepository;
-    //private final CustomerRepository customerRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, ItemRepository itemRepository) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
-        //this.customerService = customerService;
-        //this.itemService = itemService;
         this.itemRepository = itemRepository;
-        //this.customerRepository = customerRepository;
     }
 
     public List<OrderDto> getAllOrders(){
@@ -43,6 +38,18 @@ public class OrderService {
         return orderMapper.toDto(orderRepository.getOrderById(orderId));
     }
 
+    
+    public OrderDto reOrder(int orderId,int customerId){
+        Order order = orderRepository.getCustomerOrdersById(orderId,customerId);
+
+        List<CreateItemGroupDto> createItemGroupDtoList = retrieveCreateItemGroupDtoListFromOrder(order);
+        
+        return createOrder(new CreateOrderDto(
+                createItemGroupDtoList,
+                customerId,
+                LocalDate.now()
+        ));
+    }
     public OrderDto createOrder(CreateOrderDto createOrderDto){
         List<ItemGroup> itemGroupList = createOrderItemGroupList(createOrderDto);
 
@@ -60,9 +67,10 @@ public class OrderService {
 
         for(CreateItemGroupDto createItemGroupDto : createItemGroupDtoList){
             Item item = itemRepository.getItemById(createItemGroupDto.getId());
+            Item itemCopy = new Item(item.getName(),item.getDescription(),item.getPrice(),item.getStockAmount());
             //new itemGroup
             ItemGroup orderItemGroup = new ItemGroup(
-                    item,
+                    itemCopy,
                     createItemGroupDto.getOrderedItemAmount(),
                     calculateShippingDate(item,createItemGroupDto,createOrderDto.getOrderDate()),
                     calculateGroupPrice(item,createItemGroupDto)
@@ -100,7 +108,24 @@ public class OrderService {
     private void updateItemStockAmount(Item item,CreateItemGroupDto createItemGroupDto){
         if(isItemInStock(item,createItemGroupDto)){
             item.changeStockAmount(item.getStockAmount() - createItemGroupDto.getOrderedItemAmount());
-            itemRepository.updateItem(item);
+        } else {
+            item.changeStockAmount(0);
         }
+        itemRepository.updateItem(item);
+
+    }
+    private List<CreateItemGroupDto> retrieveCreateItemGroupDtoListFromOrder(Order order){
+        List<CreateItemGroupDto> createItemGroupDtoList = new ArrayList<>();
+        for(ItemGroup itemGroup: order.getItemGroupList()){
+            CreateItemGroupDto createItemGroupDto = new CreateItemGroupDto(
+                    itemGroup.getItem().getId(),
+                    itemGroup.getOrderedItemAmount()
+            );
+            createItemGroupDtoList.add(createItemGroupDto);
+        }
+        return createItemGroupDtoList;
+    }
+    public ViewOrderReportDto getAllCustomerOrders(int customerId){
+        return orderMapper.toViewReportDto(orderMapper.toViewDto(orderRepository.getAllCustomerOrders(customerId)));
     }
 }
