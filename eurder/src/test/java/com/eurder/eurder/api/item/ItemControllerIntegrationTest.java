@@ -1,11 +1,7 @@
 package com.eurder.eurder.api.item;
 
-import com.eurder.eurder.domain.customer.Customer;
-import com.eurder.eurder.domain.customer.CustomerRepository;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemRepository;
-import com.eurder.eurder.domain.item.UrgencyIndicator;
-import com.eurder.eurder.service.Item.ItemMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -18,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -32,7 +27,7 @@ class ItemControllerIntegrationTest {
     @Test
     void whenThereIsOneItemInTheRepository_thenICanRetrieveThisItemById() {
         // GIVEN
-        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2, UrgencyIndicator.STOCK_LOW);
+        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2);
         repository.save(item1);
 
         // WHEN
@@ -60,7 +55,7 @@ class ItemControllerIntegrationTest {
     }
     @Test
     void whenIPostAnItem_thenTheRepositoryContainsThisItem() {
-        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2,UrgencyIndicator.STOCK_LOW);
+        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2);
         RestAssured
                 .given()
                 .auth()
@@ -100,8 +95,8 @@ class ItemControllerIntegrationTest {
     @Test
     void whenTheRepositoryContains2Customers_thenICanRetrieveThemViaTheAPI(){
         //given
-        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2,UrgencyIndicator.STOCK_LOW);
-        Item item2 = new Item("Ping pong ballen","Ping pong ballen (per 6)",2,2,UrgencyIndicator.STOCK_LOW);
+        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2);
+        Item item2 = new Item("Ping pong ballen","Ping pong ballen (per 6)",2,2);
 
         repository.save(item1);
         repository.save(item2);

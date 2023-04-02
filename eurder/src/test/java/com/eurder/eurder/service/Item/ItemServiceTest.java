@@ -38,8 +38,8 @@ class ItemServiceTest {
     void getAllItems_givenAListOfItems_returnAListOfItemDto() {
         //given
         ItemMapper itemMapper = new ItemMapper();
-        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7, UrgencyIndicator.STOCK_LOW);
-        Item item2 = new Item("Ping pong ball","Package of 6 balls",2.0,10, UrgencyIndicator.STOCK_LOW);
+        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7);
+        Item item2 = new Item("Ping pong ball","Package of 6 balls",2.0,10);
         List<Item> itemList = new ArrayList<>();
         itemList.add(item1);
         itemList.add(item2);
@@ -58,7 +58,7 @@ class ItemServiceTest {
         //given
         int id = 1;
         ItemMapper itemMapper = new ItemMapper();
-        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7, UrgencyIndicator.STOCK_LOW);
+        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7);
         Mockito.when(itemService.getItemById(id))
                 .thenReturn(itemMapper.toDto(item1));
         //when
@@ -72,7 +72,7 @@ class ItemServiceTest {
         //given
         int id = 1;
         ItemMapper itemMapper = new ItemMapper();
-        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7, UrgencyIndicator.STOCK_LOW);
+        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7);
         UpdateItemDto updateItemDto = new UpdateItemDto("Ping pong rackets (pair)", "Set of 2 rackets to play ping pong.", 8.0,5);
         Mockito.when(itemRepositoryMock.getItemById(id))
                         .thenReturn(item1);
@@ -92,7 +92,7 @@ class ItemServiceTest {
     void updateItem_verifyMethodUpdateItemIsCalledOnItemService() {
         //given
         ItemMapper itemMapper = new ItemMapper();
-        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7, UrgencyIndicator.STOCK_LOW);
+        Item item1 = new Item("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",10.0,7);
         UpdateItemDto updateItemDto1 = new UpdateItemDto("Ping pong rackets (pair)","Set of 2 rackets to play ping pong.",15.0,7);
         Mockito.when(itemRepositoryMock.getItemById(item1.getId()))
                 .thenReturn(item1);

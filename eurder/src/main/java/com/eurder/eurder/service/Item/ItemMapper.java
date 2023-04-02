@@ -20,7 +20,7 @@ public class ItemMapper {
                 item.getDescription(),
                 item.getPrice(),
                 item.getStockAmount(),
-                changeUrgencyIndicator(item.getStockAmount())
+                item.changeUrgencyIndicator()
         );
     }
 
@@ -41,15 +41,6 @@ public class ItemMapper {
         return itemGroupList.stream()
                 .map(i -> toViewDto(i))
                 .collect(Collectors.toList());
-    }
-    public UrgencyIndicator changeUrgencyIndicator(int stockAmount){
-        if(stockAmount >= 10){
-            return UrgencyIndicator.STOCK_HIGH;
-        }
-        if(stockAmount >= 5 && stockAmount < 10){
-            return UrgencyIndicator.STOCK_MEDIUM;
-        }
-        return UrgencyIndicator.STOCK_LOW;
     }
 
 }

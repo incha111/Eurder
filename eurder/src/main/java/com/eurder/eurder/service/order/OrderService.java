@@ -70,7 +70,7 @@ public class OrderService {
 
         for(CreateItemGroupDto createItemGroupDto : createItemGroupDtoList){
             Item item = itemRepository.getItemById(createItemGroupDto.getId());
-            Item itemCopy = new Item(item.getId(),item.getName(),item.getDescription(),item.getPrice(),item.getStockAmount(),item.getUrgencyIndicator());
+            Item itemCopy = new Item(item.getId(),item.getName(),item.getDescription(),item.getPrice(),item.getStockAmount());
             //new itemGroup
             ItemGroup orderItemGroup = new ItemGroup(
                     itemCopy,
@@ -114,7 +114,7 @@ public class OrderService {
         } else {
             item.changeStockAmount(0);
         }
-        itemMapper.changeUrgencyIndicator(item.getStockAmount());
+        item.changeUrgencyIndicator();
         itemRepository.updateItem(item);
 
     }

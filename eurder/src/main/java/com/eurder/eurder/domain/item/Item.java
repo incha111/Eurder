@@ -17,22 +17,22 @@ public class Item {
         this.id = ++counter;
     }
 
-    public Item(String name, String description, double price, int stockAmount, UrgencyIndicator urgencyIndicator) {
+    public Item(String name, String description, double price, int stockAmount) {
         this.id = ++counter;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockAmount = stockAmount;
-        this.urgencyIndicator = urgencyIndicator;
+        this.urgencyIndicator = changeUrgencyIndicator();
     }
 
-    public Item(int id, String name, String description, double price, int stockAmount,UrgencyIndicator urgencyIndicator) {
+    public Item(int id, String name, String description, double price, int stockAmount) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockAmount = stockAmount;
-        this.urgencyIndicator = urgencyIndicator;
+        this.urgencyIndicator = changeUrgencyIndicator();
     }
 
     public int getId() {
@@ -70,6 +70,15 @@ public class Item {
     }
     public void changeStockAmount(int stockAmount){
         this.stockAmount = stockAmount;
+    }
+    public UrgencyIndicator changeUrgencyIndicator(){
+        if(stockAmount >= 10){
+            return UrgencyIndicator.STOCK_HIGH;
+        }
+        if(stockAmount >= 5 && stockAmount < 10){
+            return UrgencyIndicator.STOCK_MEDIUM;
+        }
+        return UrgencyIndicator.STOCK_LOW;
     }
 
     @Override
