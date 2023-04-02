@@ -7,6 +7,7 @@ import com.eurder.eurder.domain.customer.CustomerRepository;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.ItemRepository;
+import com.eurder.eurder.domain.item.UrgencyIndicator;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
 import com.eurder.eurder.service.order.OrderService;
@@ -43,8 +44,8 @@ class OrderControllerIntegrationTest {
     @Test
     void whenThereIsOneOrderInTheRepository_thenICanRetrieveThisOrderById() {
         // GIVEN
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5, UrgencyIndicator.STOCK_MEDIUM);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7, UrgencyIndicator.STOCK_MEDIUM);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3, LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
@@ -60,6 +61,9 @@ class OrderControllerIntegrationTest {
         // WHEN
         Order order = RestAssured
                 .given()
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com","123")
                 .contentType(ContentType.JSON)
                 //.header(new Header("Authorization", "Basic username:password"))
                 //.auth().preemptive().basic("username", "password")
@@ -79,8 +83,8 @@ class OrderControllerIntegrationTest {
     }
     @Test
     void whenIPostAnOrder_thenTheRepositoryContainsThisOrder() throws CloneNotSupportedException {
-        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2);
-        Item item2 = new Item("Ping pong ballen","Ping pong ballen (per 6)",2,2);
+        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2, UrgencyIndicator.STOCK_MEDIUM);
+        Item item2 = new Item("Ping pong ballen","Ping pong ballen (per 6)",2,2, UrgencyIndicator.STOCK_MEDIUM);
         itemRepository.save(item1);
         itemRepository.save(item2);
 
@@ -118,6 +122,9 @@ class OrderControllerIntegrationTest {
         RestAssured
                 // GIVEN
                 .given()
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com","123")
                 .contentType(ContentType.JSON)
                 // WHEN
                 .when()
@@ -133,12 +140,12 @@ class OrderControllerIntegrationTest {
 
     }
     @Test
-    void whenTheRepositoryContains2Orders_thenICanRetrieveThemViaTheAPI(){
+    void whenTheRepositoryContainsTwoOrders_thenICanRetrieveThemViaTheAPI(){
         //given
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
-        Item item3 = new Item("dark chocolate","dark chocolate",2.3,10);
-        Item item4 = new Item("white chocolate","white chocolate",2.7,2);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5, UrgencyIndicator.STOCK_MEDIUM);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7, UrgencyIndicator.STOCK_MEDIUM);
+        Item item3 = new Item("dark chocolate","dark chocolate",2.3,10, UrgencyIndicator.STOCK_MEDIUM);
+        Item item4 = new Item("white chocolate","white chocolate",2.7,2, UrgencyIndicator.STOCK_MEDIUM);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3,LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
@@ -162,6 +169,9 @@ class OrderControllerIntegrationTest {
         //when
         List<Order> list = RestAssured
                 .given()
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com","123")
                 .contentType(ContentType.JSON)
                 .when()
                 .port(port)

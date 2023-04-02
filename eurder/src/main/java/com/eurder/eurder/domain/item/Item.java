@@ -13,6 +13,10 @@ public class Item {
     private int stockAmount;
     private UrgencyIndicator urgencyIndicator;
 
+    public Item() {
+        this.id = ++counter;
+    }
+
     public Item(String name, String description, double price, int stockAmount, UrgencyIndicator urgencyIndicator) {
         this.id = ++counter;
         this.name = name;

@@ -3,6 +3,7 @@ package com.eurder.eurder.service.order;
 import com.eurder.eurder.api.order.dto.OrderDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
+import com.eurder.eurder.domain.item.UrgencyIndicator;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.service.Item.ItemMapper;
 import org.assertj.core.api.Assertions;
@@ -24,8 +25,8 @@ class OrderMapperTest {
     @Test
     void toDto_givingAnOrder_thenReturnsAnOrderDto() {
         //given
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5, UrgencyIndicator.STOCK_LOW);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7, UrgencyIndicator.STOCK_LOW);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3,LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
@@ -47,10 +48,10 @@ class OrderMapperTest {
     @Test
     void toDto_givingAListOfOrders_thenReturnsAListOfOrderDto() {
         //given
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
-        Item item3 = new Item("dark chocolate","dark chocolate",2.3,10);
-        Item item4 = new Item("white chocolate","white chocolate",2.7,2);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5, UrgencyIndicator.STOCK_LOW);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7, UrgencyIndicator.STOCK_LOW);
+        Item item3 = new Item("dark chocolate","dark chocolate",2.3,10, UrgencyIndicator.STOCK_LOW);
+        Item item4 = new Item("white chocolate","white chocolate",2.7,2, UrgencyIndicator.STOCK_LOW);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3,LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);

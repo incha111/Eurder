@@ -2,6 +2,9 @@ package com.eurder.eurder.api.customer;
 
 import com.eurder.eurder.domain.customer.Customer;
 import com.eurder.eurder.domain.customer.CustomerRepository;
+import com.eurder.eurder.service.security.Role;
+import com.eurder.eurder.service.security.SecurityRepository;
+import com.eurder.eurder.service.security.User;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -22,17 +25,20 @@ class CustomerControllerIntegrationTest {
     private int port;
 
     @Autowired
-    private CustomerRepository repository;
+    private CustomerRepository customerRepository;
 
     @Test
     void whenThereIsOneUserInTheRepository_thenICanRetrieveThisUserById() {
         // GIVEN
         Customer customer1 = new Customer("Louis","Koppens","louis.Koppens@gmail.com","123","BeCentral 2","123456");
-        repository.save(customer1);
+        customerRepository.save(customer1);
 
         // WHEN
         Customer customer = RestAssured
                 .given()
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com","123")
                 .contentType(ContentType.JSON)
                 //.header(new Header("Authorization", "Basic username:password"))
                 //.auth().preemptive().basic("username", "password")
@@ -51,7 +57,7 @@ class CustomerControllerIntegrationTest {
         Assertions.assertThat(customer).isEqualTo(customer1);
     }
     @Test
-    void whenIPostACustomer_thenTheRepositoryContainsThisCustomer() {
+    void whenACustomerRegisters_thenTheRepositoryContainsThisCustomer() {
         Customer newCustomer = new Customer("Louis","Koppens","louis.Koppens@gmail.com","123","BeCentral 2","123456");
         RestAssured
                 .given()
@@ -65,13 +71,16 @@ class CustomerControllerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
 
-        Assertions.assertThat(repository.getAllCustomers()).isNotEmpty();
+        Assertions.assertThat(customerRepository.getAllCustomers()).isNotEmpty();
     }
     @Test
     void whenTheRepositoryIsEmpty_thenIReceiveA404WhenRequestingAUserById() {
         RestAssured
                 // GIVEN
                 .given()
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com","123")
                 .contentType(ContentType.JSON)
                 // WHEN
                 .when()
@@ -83,7 +92,7 @@ class CustomerControllerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.NOT_FOUND.value());
 
-        Assertions.assertThat(repository.getAllCustomers()).isEmpty();
+        Assertions.assertThat(customerRepository.getAllCustomers()).isEmpty();
 
     }
     @Test
@@ -92,12 +101,15 @@ class CustomerControllerIntegrationTest {
         Customer customer1 = new Customer("Louis","Koppens","louis.Koppens@gmail.com","123","BeCentral 2","123456");
         Customer customer2 = new Customer("Lisa","Martens","lisa.martens@gmail.com","123","BeCentral 1","654321");
 
-        repository.save(customer1);
-        repository.save(customer2);
+        customerRepository.save(customer1);
+        customerRepository.save(customer2);
 
         //when
         List<Customer> list = RestAssured
                 .given()
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com","123")
                 .contentType(ContentType.JSON)
                 .when()
                 .port(port)

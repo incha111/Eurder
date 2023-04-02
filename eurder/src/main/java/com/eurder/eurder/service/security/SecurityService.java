@@ -19,7 +19,7 @@ public class SecurityService {
         User user = securityRepository.getUser(emailPassword.getEmail());
 
         if(user == null){
-            throw new UnknownUserException("Unknown user email. Please try again...");
+            throw new UnknownUserException("Unknown user. Please try again...");
         }
 
         if (!user.doesPasswordMatch(emailPassword.getPassword())){

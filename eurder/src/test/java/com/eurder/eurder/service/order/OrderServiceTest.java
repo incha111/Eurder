@@ -6,6 +6,7 @@ import com.eurder.eurder.api.order.dto.OrderDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.ItemRepository;
+import com.eurder.eurder.domain.item.UrgencyIndicator;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
 import com.eurder.eurder.service.Item.ItemMapper;
@@ -45,10 +46,10 @@ class OrderServiceTest {
     @Test
     void getAllOrders_givingAListOfOrders_returnsAListOfOrdersDto() {
         //given
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
-        Item item3 = new Item("dark chocolate","dark chocolate",2.3,10);
-        Item item4 = new Item("white chocolate","white chocolate",2.7,2);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5,UrgencyIndicator.STOCK_MEDIUM);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7,UrgencyIndicator.STOCK_MEDIUM);
+        Item item3 = new Item("dark chocolate","dark chocolate",2.3,10,UrgencyIndicator.STOCK_HIGH);
+        Item item4 = new Item("white chocolate","white chocolate",2.7,2, UrgencyIndicator.STOCK_LOW);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3, LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
@@ -80,8 +81,8 @@ class OrderServiceTest {
     void getOrderById_VerifyMethodGetOrderByIdIsCalledOnOrderService() {
         //given
         int orderId = 1;
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5,UrgencyIndicator.STOCK_MEDIUM);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7,UrgencyIndicator.STOCK_MEDIUM);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3,LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
@@ -105,10 +106,10 @@ class OrderServiceTest {
     void getOrderById_givingAnOrderId_returnsThatOrder() {
         //given
         OrderMapper orderMapper = new OrderMapper(new ItemMapper());
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
-        Item item3 = new Item("dark chocolate","dark chocolate",2.3,10);
-        Item item4 = new Item("white chocolate","white chocolate",2.7,2);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5,UrgencyIndicator.STOCK_MEDIUM);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7,UrgencyIndicator.STOCK_MEDIUM);
+        Item item3 = new Item("dark chocolate","dark chocolate",2.3,10,UrgencyIndicator.STOCK_HIGH);
+        Item item4 = new Item("white chocolate","white chocolate",2.7,2,UrgencyIndicator.STOCK_LOW);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3,LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
@@ -145,8 +146,8 @@ class OrderServiceTest {
     void createOrder_VerifyMethodCreateOrderIsCalledOnOrderService() {
         //given
         OrderMapper orderMapper = new OrderMapper(new ItemMapper());
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5,UrgencyIndicator.STOCK_MEDIUM);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7,UrgencyIndicator.STOCK_MEDIUM);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3,LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
@@ -183,8 +184,8 @@ class OrderServiceTest {
         //given
         int orderId = 1;
         OrderMapper orderMapper = new OrderMapper(new ItemMapper());
-        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
+        Item item1 = new Item("paprika chips","paprika chips",1.5,5,UrgencyIndicator.STOCK_MEDIUM);
+        Item item2 = new Item("pickels chips","pickels chips",1.5,7,UrgencyIndicator.STOCK_MEDIUM);
 
         ItemGroup itemGroup1 = new ItemGroup(item1,3,LocalDate.now().plusDays(1),4.5);
         ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
