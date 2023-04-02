@@ -1,5 +1,6 @@
 package com.eurder.eurder.domain.item;
 
+import com.eurder.eurder.domain.customer.Customer;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,19 +18,16 @@ public class ItemRepository {
         itemList = new ArrayList<>();
     }
     public List<Item> getAllItems(){
-        Comparator<Item> compareByUrgencyIndicatorAndByStockAmount = Comparator
-                .comparing(Item::getUrgencyIndicator)
-                .thenComparing(Item::getStockAmount);
+        // First sorting on stockAmount
+        Comparator<Item> compareByStockAmount = Comparator
+                .comparingInt(i -> i.getStockAmount());
+        // Then sorting on urgency indicator
+        Comparator<Item> compareByUrgencyIndicator = compareByStockAmount
+                .thenComparingInt(i -> i.getUrgencyIndicator().getUrgencyLevel());
+
         return itemList.stream()
-                .sorted(compareByUrgencyIndicatorAndByStockAmount)
+                .sorted(compareByStockAmount)
                 .collect(Collectors.toList());
-                /*.sorted((i1,i2) -> {
-                    if(i1.getUrgencyIndicator().getUrgencyLevel() > i2.getUrgencyIndicator().getUrgencyLevel()) return 1;
-                    if(i1.getUrgencyIndicator().getUrgencyLevel() < i2.getUrgencyIndicator().getUrgencyLevel()) return -1;
-                    return 0;
-                })
-                .sorted(Comparator.comparing(i -> (i.getUrgencyIndicator().getUrgencyLevel())))
-                .collect(Collectors.toList());*/
     }
     public Item getItemById(int id) {
         return itemList.stream()
@@ -39,7 +37,11 @@ public class ItemRepository {
     }
 
     public Item save(Item item){
-        itemList.add(item);
+        if(!checkDuplicateInDatabase(item)){
+            itemList.add(item);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FOUND,"This item is already present in the database.");
+        }
         return item;
     }
 
@@ -49,5 +51,9 @@ public class ItemRepository {
                 .map(i -> itemList.set(itemList.indexOf(item),item))
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"No item found to update for id " + item.getId()));
+    }
+    private boolean checkDuplicateInDatabase(Item item){
+        return itemList.stream()
+                .anyMatch(i -> i.getName().equals(item.getName()));
     }
 }

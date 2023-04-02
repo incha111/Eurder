@@ -129,7 +129,7 @@ public class OrderService {
         }
         return createItemGroupDtoList;
     }
-    public ViewOrderReportDto getAllCustomerOrders(int customerId){
-        return orderMapper.toViewReportDto(orderMapper.toViewDto(orderRepository.getAllCustomerOrders(customerId)));
+    public ViewOrderReportDto getCustomerOrders(int customerId){
+        return orderMapper.toViewReportDto(orderMapper.toViewDto(orderRepository.getCustomerOrders(customerId)));
     }
 }

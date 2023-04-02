@@ -1,10 +1,11 @@
-2023-03-31T14:58:32.804+02:00 ERROR 16892 --- [http-nio-8085-exec-9] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.CloneNotSupportedException: com.eurder.eurder.service.order.OrderService] with root cause
+2023-04-01T18:19:44.266+02:00 ERROR 11736 --- [http-nio-8085-exec-7] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.StringIndexOutOfBoundsException: begin 0, end -1, length 24] with root cause
 
-java.lang.CloneNotSupportedException: com.eurder.eurder.service.order.OrderService
-	at java.base/java.lang.Object.clone(Native Method) ~[na:na]
-	at com.eurder.eurder.service.order.OrderService.createOrderItemGroupList(OrderService.java:69) ~[classes/:na]
-	at com.eurder.eurder.service.order.OrderService.createOrder(OrderService.java:54) ~[classes/:na]
-	at com.eurder.eurder.api.order.OrderController.createOrder(OrderController.java:45) ~[classes/:na]
+java.lang.StringIndexOutOfBoundsException: begin 0, end -1, length 24
+	at java.base/java.lang.String.checkBoundsBeginEnd(String.java:4604) ~[na:na]
+	at java.base/java.lang.String.substring(String.java:2707) ~[na:na]
+	at com.eurder.eurder.service.security.SecurityService.getEmailPassword(SecurityService.java:36) ~[classes/:na]
+	at com.eurder.eurder.service.security.SecurityService.validateAuthorization(SecurityService.java:18) ~[classes/:na]
+	at com.eurder.eurder.api.item.ItemController.createItem(ItemController.java:35) ~[classes/:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]

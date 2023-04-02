@@ -29,7 +29,18 @@ public class CustomerRepository {
     }
 
     public Customer save(Customer customer){
-        customerList.add(customer);
+        if(!checkDuplicateInDatabase(customer)){
+            customerList.add(customer);
+        } else {
+            throw new ResponseStatusException(HttpStatus.FOUND,"This customer is already present in the database.");
+        }
         return customer;
+    }
+
+    private boolean checkDuplicateInDatabase(Customer customer){
+        return customerList.stream()
+                .filter(c -> c.getFirstname().equals(customer.getFirstname()))
+                .filter(c -> c.getLastname().equals(customer.getLastname()))
+                .anyMatch(c -> c.getAddress().equals(customer.getAddress()));
     }
 }

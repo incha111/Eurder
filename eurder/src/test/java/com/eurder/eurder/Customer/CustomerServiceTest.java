@@ -5,6 +5,7 @@ import com.eurder.eurder.domain.customer.Customer;
 import com.eurder.eurder.domain.customer.CustomerRepository;
 import com.eurder.eurder.service.customer.CustomerMapper;
 import com.eurder.eurder.service.customer.CustomerService;
+import com.eurder.eurder.service.security.SecurityService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +18,14 @@ class CustomerServiceTest {
     CustomerRepository customerRepositoryMock;
     CustomerMapper customerMapperMock;
     CustomerService customerService;
+    SecurityService securityServiceMock;
 
     @BeforeEach
     void setUpCustomerServiceTest() {
         customerRepositoryMock = Mockito.mock(CustomerRepository.class);
         customerMapperMock = Mockito.mock(CustomerMapper.class);
-        customerService = new CustomerService(customerRepositoryMock,customerMapperMock);
+        securityServiceMock = Mockito.mock(SecurityService.class);
+        customerService = new CustomerService(customerRepositoryMock,customerMapperMock, securityServiceMock);
     }
 
     @Test

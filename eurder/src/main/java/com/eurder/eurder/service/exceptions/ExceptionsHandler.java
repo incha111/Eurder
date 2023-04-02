@@ -21,7 +21,28 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         response.sendError(NOT_FOUND.value(),exception.getMessage());
     }
 
+    @ExceptionHandler(OrderNotFoundException.class)
     protected void orderNotFoundException(OrderNotFoundException exception, HttpServletResponse response) throws IOException {
         response.sendError(NOT_FOUND.value(),exception.getMessage());
+    }
+
+    @ExceptionHandler(ElementAlreadyRegisteredInDatabaseException.class)
+    protected void elementAlreadyRegisteredInDatabaseException(ElementAlreadyRegisteredInDatabaseException exception, HttpServletResponse response) throws IOException {
+        response.sendError(FOUND.value(),exception.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    protected void unauthorizedException(UnauthorizedException exception, HttpServletResponse response) throws IOException {
+        response.sendError(UNAUTHORIZED.value(),exception.getMessage());
+    }
+
+    @ExceptionHandler(UnknownUserException.class)
+    protected void unknownUserException(UnknownUserException exception, HttpServletResponse response) throws IOException {
+        response.sendError(UNAUTHORIZED.value(),exception.getMessage());
+    }
+
+    @ExceptionHandler(WrongPasswordException.class)
+    protected void wrongPasswordException(WrongPasswordException exception, HttpServletResponse response) throws IOException {
+        response.sendError(UNAUTHORIZED.value(),exception.getMessage());
     }
 }

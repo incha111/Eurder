@@ -32,7 +32,7 @@ public class OrderRepository {
                 .findFirst()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"No order found for order id " + orderId + " and customer id " + customerId));
     }
-    public List<Order>getAllCustomerOrders(int customerId){
+    public List<Order>getCustomerOrders(int customerId){
         return orderList.stream()
                 .filter(o -> o.getCustomerId() == customerId)
                 .collect(Collectors.toList());
