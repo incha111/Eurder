@@ -4,6 +4,7 @@ import com.eurder.eurder.api.customer.dto.CreateCustomerDto;
 import com.eurder.eurder.api.customer.dto.CustomerDto;
 import com.eurder.eurder.domain.customer.Customer;
 import com.eurder.eurder.domain.customer.CustomerRepository;
+import com.eurder.eurder.domain.customer.CustomerRepositoryJpa;
 import com.eurder.eurder.service.security.Role;
 import com.eurder.eurder.service.security.SecurityService;
 import com.eurder.eurder.service.security.User;
@@ -26,10 +27,10 @@ public class CustomerService {
     }
 
     public List<CustomerDto> getAllCustomers(){
-        return customerMapper.toDto(customerRepository.getAllCustomers());
+        return customerMapper.toDto(customerRepository.findAll());
     }
     public CustomerDto getCustomerById(int customerId){
-        return customerMapper.toDto(customerRepository.getCustomerById(customerId));
+        return customerMapper.toDto(customerRepository.findById(customerId).get());
     }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto){

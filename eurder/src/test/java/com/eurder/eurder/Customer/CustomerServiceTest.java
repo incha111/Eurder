@@ -3,6 +3,7 @@ package com.eurder.eurder.Customer;
 import com.eurder.eurder.api.customer.dto.CustomerDto;
 import com.eurder.eurder.domain.customer.Customer;
 import com.eurder.eurder.domain.customer.CustomerRepository;
+import com.eurder.eurder.domain.customer.CustomerRepositoryJpa;
 import com.eurder.eurder.service.customer.CustomerMapper;
 import com.eurder.eurder.service.customer.CustomerService;
 import com.eurder.eurder.service.security.SecurityService;
@@ -35,7 +36,7 @@ class CustomerServiceTest {
         customerService.getAllCustomers();
 
         //then
-        Mockito.verify(customerRepositoryMock).getAllCustomers();
+        Mockito.verify(customerRepositoryMock).findAll();
     }
 
     @Test
@@ -65,7 +66,7 @@ class CustomerServiceTest {
         customerService.getCustomerById(customerId);
 
         //then
-        Mockito.verify(customerRepositoryMock).getCustomerById(customerId);
+        Mockito.verify(customerRepositoryMock).findById(customerId);
 
     }
     @Test
@@ -73,14 +74,15 @@ class CustomerServiceTest {
         //given
         Customer customer1 = new Customer("Louis","Koppens","louis.Koppens@gmail.com","123","BeCentral 2","123456");
         Customer customer2 = new Customer("Lisa","Martens","lisa.martens@gmail.com","123","BeCentral 1","654321");
-        Mockito.when(customerRepositoryMock.getCustomerById(customer1.getId()))
-                .thenReturn(customer1);
+        //Mockito.when(customerRepositoryMock.findById(customer1.getId()))
+                //.thenReturn(customer1)
+                ;
 
         //when
-        Customer customer = customerRepositoryMock.getCustomerById(customer1.getId());
+        Customer customer = customerRepositoryMock.findById(customer1.getId()).get();
 
         //then
-        Assertions.assertThat(customer).isEqualTo(customerRepositoryMock.getCustomerById(customer1.getId()));
+        Assertions.assertThat(customer).isEqualTo(customerRepositoryMock.getReferenceById(customer1.getId()));
     }
 
 //    @Test

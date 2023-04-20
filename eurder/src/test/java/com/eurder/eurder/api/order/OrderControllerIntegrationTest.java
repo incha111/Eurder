@@ -3,7 +3,7 @@ package com.eurder.eurder.api.order;
 import com.eurder.eurder.api.item.dto.CreateItemGroupDto;
 import com.eurder.eurder.api.order.dto.CreateOrderDto;
 import com.eurder.eurder.domain.customer.Customer;
-import com.eurder.eurder.domain.customer.CustomerRepository;
+import com.eurder.eurder.domain.customer.CustomerRepositoryJpa;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.ItemRepository;
@@ -35,7 +35,7 @@ class OrderControllerIntegrationTest {
     @Autowired
     private ItemRepository itemRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerRepositoryJpa customerRepository;
 
     @Autowired
     private OrderService service;

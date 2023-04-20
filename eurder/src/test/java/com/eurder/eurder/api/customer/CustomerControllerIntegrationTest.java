@@ -1,10 +1,7 @@
 package com.eurder.eurder.api.customer;
 
 import com.eurder.eurder.domain.customer.Customer;
-import com.eurder.eurder.domain.customer.CustomerRepository;
-import com.eurder.eurder.service.security.Role;
-import com.eurder.eurder.service.security.SecurityRepository;
-import com.eurder.eurder.service.security.User;
+import com.eurder.eurder.domain.customer.CustomerRepositoryJpa;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -25,7 +22,7 @@ class CustomerControllerIntegrationTest {
     private int port;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerRepositoryJpa customerRepository;
 
     @Test
     void whenThereIsOneUserInTheRepository_thenICanRetrieveThisUserById() {

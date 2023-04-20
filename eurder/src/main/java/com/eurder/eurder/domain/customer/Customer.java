@@ -1,20 +1,36 @@
 package com.eurder.eurder.domain.customer;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@Table(name = "customer")
 public class Customer {
-    public static int counter = 0;
-    public final int id;
-    private final String firstname;
-    private final String lastname;
-    private final String email;
-    private final String password;
-    protected final String address;
-    protected final String phone;
+   // public static int counter = 0;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_seq")
+    @SequenceGenerator(sequenceName = "customer_id_seq", allocationSize = 1, name = "customer_id_seq")
+    @Column(name = "id")
+    public int id;
+    @Column(name = "firstname")
+    private String firstname;
+    @Column(name = "lastname")
+    private String lastname;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "address")
+    protected String address;
+    @Column(name = "phone")
+    protected String phone;
+
+    public Customer() {
+    }
 
     public Customer(String firstname, String lastname, String email, String password, String address, String phone) {
-        this.id = ++counter;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
