@@ -7,9 +7,11 @@ import com.eurder.eurder.api.order.dto.ViewOrderReportDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.ItemRepository;
+import com.eurder.eurder.domain.item.ItemRepositoryJpa;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
 import com.eurder.eurder.service.Item.ItemMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class OrderService {
     public static final int SHIPPINGDAYS_WHEN_ITEM_IS_IN_STOCK = 1;
     public static final int SHIPPINGDAYS_WHEN_ITEM_IS_NOT_IN_STOCK = 7;
@@ -35,15 +38,15 @@ public class OrderService {
     }
 
     public List<OrderDto> getAllOrders(){
-        return orderMapper.toDto(orderRepository.getAllOrders());
+        return orderMapper.toDto(orderRepository.findAll());
     }
     public OrderDto getOrderById(int orderId){
-        return orderMapper.toDto(orderRepository.getOrderById(orderId));
+        return orderMapper.toDto(orderRepository.findById(orderId).get());
     }
 
     
     public OrderDto reOrder(int orderId,int customerId){
-        Order order = orderRepository.getCustomerOrdersById(orderId,customerId);
+        Order order = orderRepository.findOrderByOrderIdAndCustomerId(orderId,customerId);
 
         List<CreateItemGroupDto> createItemGroupDtoList = retrieveCreateItemGroupDtoListFromOrder(order);
         
@@ -69,7 +72,7 @@ public class OrderService {
         List<CreateItemGroupDto> createItemGroupDtoList = createOrderDto.getCreateItemGroupDto();
 
         for(CreateItemGroupDto createItemGroupDto : createItemGroupDtoList){
-            Item item = itemRepository.getItemById(createItemGroupDto.getId());
+            Item item = itemRepository.findById(createItemGroupDto.getId()).get();
             Item itemCopy = new Item(item.getId(),item.getName(),item.getDescription(),item.getPrice(),item.getStockAmount());
             //new itemGroup
             ItemGroup orderItemGroup = new ItemGroup(
@@ -115,7 +118,7 @@ public class OrderService {
             item.changeStockAmount(0);
         }
         item.changeUrgencyIndicator();
-        itemRepository.updateItem(item);
+        //itemRepository.updateItem(item);
 
     }
     private List<CreateItemGroupDto> retrieveCreateItemGroupDtoListFromOrder(Order order){
@@ -130,6 +133,6 @@ public class OrderService {
         return createItemGroupDtoList;
     }
     public ViewOrderReportDto getCustomerOrders(int customerId){
-        return orderMapper.toViewReportDto(orderMapper.toViewDto(orderRepository.getCustomerOrders(customerId)));
+        return orderMapper.toViewReportDto(orderMapper.toViewDto((orderRepository.findOrdersByCustomerId(customerId))));
     }
 }

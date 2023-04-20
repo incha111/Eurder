@@ -1,7 +1,7 @@
 package com.eurder.eurder.api.item;
 
 import com.eurder.eurder.domain.item.Item;
-import com.eurder.eurder.domain.item.ItemRepository;
+import com.eurder.eurder.domain.item.ItemRepositoryJpa;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
@@ -22,7 +22,7 @@ class ItemControllerIntegrationTest {
     private int port;
 
     @Autowired
-    private ItemRepository repository;
+    private ItemRepositoryJpa repository;
 
     @Test
     void whenThereIsOneItemInTheRepository_thenICanRetrieveThisItemById() {

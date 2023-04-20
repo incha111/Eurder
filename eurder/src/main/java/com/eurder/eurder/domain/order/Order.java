@@ -1,22 +1,33 @@
 package com.eurder.eurder.domain.order;
 
 import com.eurder.eurder.domain.item.ItemGroup;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-
+@Entity
+@Table(name = "order")
 public class Order {
-    private static int counter;
-    private final int orderId;
-    private final List<ItemGroup> itemGroupList;
+    //private static int counter;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int orderId;
+    @OneToMany
+    @JoinColumn(name = "item_group_id")
+    private List<ItemGroup> itemGroupList;
     //private final Customer customer;
-    private final int customerId;
-    private final LocalDate orderDate;
-    private final double totalPrice;
+    @Column(name = "customer_id")
+    private int customerId;
+    @Column(name = "order_date")
+    private LocalDate orderDate;
+    @Transient
+    private double totalPrice;
+
+    public Order() {
+    }
 
     public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList, double totalPrice) {
-        this.orderId = ++counter;
         this.orderDate = orderDate;
         this.customerId = customerId;
         this.itemGroupList = itemGroupList;

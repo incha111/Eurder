@@ -5,12 +5,15 @@ import com.eurder.eurder.api.item.dto.ItemDto;
 import com.eurder.eurder.api.item.dto.UpdateItemDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemRepository;
+import com.eurder.eurder.domain.item.ItemRepositoryJpa;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
@@ -22,7 +25,7 @@ public class ItemService {
     }
 
     public List<ItemDto> getAllItems() {
-        return itemMapper.toDto(itemRepository.getAllItems());
+        return itemMapper.toDto(itemRepository.findAll());
     }
 
     public ItemDto createItem(CreateItemDto createItemDto) {
@@ -34,16 +37,16 @@ public class ItemService {
         )));
     }
 
-    public ItemDto getItemById(int id) {
-        return itemMapper.toDto(itemRepository.getItemById(id));
+    public ItemDto getItemById(Integer id) {
+        return itemMapper.toDto(itemRepository.findById(id).get());
     }
     public ItemDto updateItem(int id, UpdateItemDto updateItemDto){
-        Item item = itemRepository.getItemById(id);
+        Item item = itemRepository.findById(id).get();
         item.changeName(updateItemDto.getName());
         item.changeDescription(updateItemDto.getDescription());
         item.changePrice(updateItemDto.getPrice());
         item.changeStockAmount(updateItemDto.getStockAmount());
 
-        return itemMapper.toDto(itemRepository.updateItem(item));
+        return itemMapper.toDto(item);
     }
 }

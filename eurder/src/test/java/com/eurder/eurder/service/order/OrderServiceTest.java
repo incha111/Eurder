@@ -5,8 +5,7 @@ import com.eurder.eurder.api.order.dto.CreateOrderDto;
 import com.eurder.eurder.api.order.dto.OrderDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
-import com.eurder.eurder.domain.item.ItemRepository;
-import com.eurder.eurder.domain.item.UrgencyIndicator;
+import com.eurder.eurder.domain.item.ItemRepositoryJpa;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
 import com.eurder.eurder.service.Item.ItemMapper;
@@ -22,14 +21,14 @@ import java.util.List;
 class OrderServiceTest {
     OrderService orderService;
     OrderRepository orderRepositoryMock;
-    ItemRepository itemRepositoryMock;
+    ItemRepositoryJpa itemRepositoryMock;
     OrderMapper orderMapperMock;
     ItemMapper itemMapperMock;
 
     @BeforeEach
     void setUp() {
         orderRepositoryMock = Mockito.mock(OrderRepository.class);
-        itemRepositoryMock = Mockito.mock(ItemRepository.class);
+        itemRepositoryMock = Mockito.mock(ItemRepositoryJpa.class);
         orderMapperMock = Mockito.mock(OrderMapper.class);
         orderService = new OrderService(orderRepositoryMock, orderMapperMock, itemMapperMock, itemRepositoryMock);
     }

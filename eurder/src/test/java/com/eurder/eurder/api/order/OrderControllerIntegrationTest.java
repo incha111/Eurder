@@ -6,7 +6,7 @@ import com.eurder.eurder.domain.customer.Customer;
 import com.eurder.eurder.domain.customer.CustomerRepositoryJpa;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
-import com.eurder.eurder.domain.item.ItemRepository;
+import com.eurder.eurder.domain.item.ItemRepositoryJpa;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
 import com.eurder.eurder.service.order.OrderService;
@@ -33,7 +33,7 @@ class OrderControllerIntegrationTest {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private ItemRepository itemRepository;
+    private ItemRepositoryJpa itemRepository;
     @Autowired
     private CustomerRepositoryJpa customerRepository;
 
