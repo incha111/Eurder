@@ -80,3 +80,13 @@ ALTER TABLE
     "order" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY;
 ALTER SEQUENCE
     "order".order_id_seq OWNED BY order.id;
+
+
+alter table "order".item_group
+    add fk_order_id integer;
+
+ALTER TABLE
+    "item_group" ADD CONSTRAINT "item_group_order_id_foreign" FOREIGN KEY ("fk_order_id") REFERENCES "order"("id");
+
+-- alter table "order"."order"
+--     drop column item_group_id;

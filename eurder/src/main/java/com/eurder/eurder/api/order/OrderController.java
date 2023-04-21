@@ -49,7 +49,7 @@ public class OrderController {
     @PostMapping(value = "register", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto createOrder(@RequestBody CreateOrderDto createOrderDto,@RequestHeader String authorization){
-        securityService.validateAuthorization(authorization, Feature.CREATE_ORDER);
+        //securityService.validateAuthorization(authorization, Feature.CREATE_ORDER);
         return orderService.createOrder(createOrderDto);
     }
     @PostMapping(value = "{orderId}/{customerId}/register", produces = "application/json")

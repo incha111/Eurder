@@ -7,16 +7,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 @Entity
-@Table(name = "order")
+@Table(name = "order",schema = "eurder")
 public class Order {
     //private static int counter;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int orderId;
-    @OneToMany
-    @JoinColumn(name = "item_group_id")
+    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
+    @JoinColumn(name = "fk_order_id")
     private List<ItemGroup> itemGroupList;
-    //private final Customer customer;
     @Column(name = "customer_id")
     private int customerId;
     @Column(name = "order_date")
@@ -27,12 +27,17 @@ public class Order {
     public Order() {
     }
 
-    public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList, double totalPrice) {
-        this.orderDate = orderDate;
-        this.customerId = customerId;
-        this.itemGroupList = itemGroupList;
-        this.totalPrice = totalPrice;
-    }
+//    public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList, double totalPrice) {
+//        this.orderDate = orderDate;
+//        this.customerId = customerId;
+//        this.itemGroupList = itemGroupList;
+//        this.totalPrice = totalPrice;
+//    }
+public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList) {
+    this.orderDate = orderDate;
+    this.customerId = customerId;
+    this.itemGroupList = itemGroupList;
+}
 
     public int getOrderId() {
         return orderId;
@@ -68,11 +73,11 @@ public class Order {
     }
     /*public void addItemGroup(ItemGroup itemGroup){
         itemGroupList.add(itemGroup);
-    }
+    }*/
 
-    private double calculateTotalPrice(){
-        return itemGroupList.stream()
+    public void calculateTotalPrice(){
+        this.totalPrice = itemGroupList.stream()
                 .map(i -> i.getGroupPrice())
                 .reduce(0.0,(a,b) -> a + b);
-    }*/
+    }
 }

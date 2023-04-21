@@ -5,7 +5,8 @@ import com.eurder.eurder.api.order.dto.CreateOrderDto;
 import com.eurder.eurder.api.order.dto.OrderDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
-import com.eurder.eurder.domain.item.ItemRepositoryJpa;
+import com.eurder.eurder.domain.item.ItemGroupRepository;
+import com.eurder.eurder.domain.item.ItemRepository;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
 import com.eurder.eurder.service.Item.ItemMapper;
@@ -21,16 +22,17 @@ import java.util.List;
 class OrderServiceTest {
     OrderService orderService;
     OrderRepository orderRepositoryMock;
-    ItemRepositoryJpa itemRepositoryMock;
+    ItemRepository itemRepositoryMock;
     OrderMapper orderMapperMock;
     ItemMapper itemMapperMock;
+    ItemGroupRepository itemGroupRepositoryMock;
 
     @BeforeEach
     void setUp() {
         orderRepositoryMock = Mockito.mock(OrderRepository.class);
-        itemRepositoryMock = Mockito.mock(ItemRepositoryJpa.class);
+        itemRepositoryMock = Mockito.mock(ItemRepository.class);
         orderMapperMock = Mockito.mock(OrderMapper.class);
-        orderService = new OrderService(orderRepositoryMock, orderMapperMock, itemMapperMock, itemRepositoryMock);
+        orderService = new OrderService(orderRepositoryMock, orderMapperMock, itemMapperMock, itemRepositoryMock, itemGroupRepositoryMock);
     }
 
     @Test
@@ -40,7 +42,7 @@ class OrderServiceTest {
         orderService.getAllOrders();
 
         //then
-        Mockito.verify(orderRepositoryMock).getAllOrders();
+        Mockito.verify(orderRepositoryMock).findAll();
     }
     @Test
     void getAllOrders_givingAListOfOrders_returnsAListOfOrdersDto() {
@@ -63,8 +65,8 @@ class OrderServiceTest {
         itemGroupList1.add(itemGroup3);
         itemGroupList1.add(itemGroup4);
 
-        Order order1 = new Order(LocalDate.now(),1,itemGroupList1,7.5);
-        Order order2 = new Order(LocalDate.now(),1,itemGroupList2,14.6);
+        Order order1 = new Order(LocalDate.now(),1);
+        Order order2 = new Order(LocalDate.now(),1);
         List<Order> orderList = new ArrayList<>();
         orderList.add(order1);
         orderList.add(order2);
@@ -90,15 +92,15 @@ class OrderServiceTest {
         itemGroupList1.add(itemGroup1);
         itemGroupList1.add(itemGroup2);
 
-        Order order = new Order(LocalDate.now(),1,itemGroupList1,7.5);
-        Mockito.when(orderRepositoryMock.getOrderById(orderId))
+        Order order = new Order(LocalDate.now(),1);
+        Mockito.when(orderRepositoryMock.findOrderByOrderId(orderId))
                 .thenReturn(order);
 
         //when
             orderService.getOrderById(orderId);
 
         //then
-        Mockito.verify(orderRepositoryMock).getOrderById(orderId);
+        Mockito.verify(orderRepositoryMock).findOrderByOrderId(orderId);
     }
 
     @Test
@@ -123,14 +125,14 @@ class OrderServiceTest {
         itemGroupList1.add(itemGroup3);
         itemGroupList1.add(itemGroup4);
 
-        Order order1 = new Order(LocalDate.now(),1,itemGroupList1,7.5);
-        Order order2 = new Order(LocalDate.now(),1,itemGroupList2,14.6);
+        Order order1 = new Order(LocalDate.now(),1);
+        Order order2 = new Order(LocalDate.now(),1);
         List<Order> orderList = new ArrayList<>();
         orderList.add(order1);
         orderList.add(order2);
 
 
-        Mockito.when(orderRepositoryMock.getOrderById(order1.getOrderId()))
+        Mockito.when(orderRepositoryMock.findOrderByOrderId(order1.getOrderId()))
                 .thenReturn(order2);
         Mockito.when(orderService.getOrderById(order1.getOrderId()))
                 .thenReturn(orderMapper.toDto(order1));
@@ -155,7 +157,7 @@ class OrderServiceTest {
         itemGroupList1.add(itemGroup1);
         itemGroupList1.add(itemGroup2);
 
-        Order order1 = new Order(LocalDate.now(),1,itemGroupList1,7.5);
+        Order order1 = new Order(LocalDate.now(),1);
         List<Order> orderList = new ArrayList<>();
         orderList.add(order1);
 
@@ -193,7 +195,7 @@ class OrderServiceTest {
         itemGroupList1.add(itemGroup1);
         itemGroupList1.add(itemGroup2);
 
-        Order order1 = new Order(LocalDate.now(),1,itemGroupList1,7.5);
+        Order order1 = new Order(LocalDate.now(),1);
 
         Mockito.when(orderService.getOrderById(orderId))
                 .thenReturn(orderMapper.toDto(order1));
