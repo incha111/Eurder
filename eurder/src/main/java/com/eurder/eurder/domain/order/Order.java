@@ -77,7 +77,10 @@ public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList)
 
     public void calculateTotalPrice(){
         this.totalPrice = itemGroupList.stream()
-                .map(i -> i.getGroupPrice())
+                .map(i -> {
+                    i.calculateGroupPrice();
+                    return i.getGroupPrice();
+                })
                 .reduce(0.0,(a,b) -> a + b);
     }
 }

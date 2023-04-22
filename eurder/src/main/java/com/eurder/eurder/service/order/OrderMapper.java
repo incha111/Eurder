@@ -19,6 +19,7 @@ public class OrderMapper {
     }
 
     public OrderDto toDto(Order order){
+        order.calculateTotalPrice();
         return new OrderDto(
                 order.getOrderId(),
                 order.getCustomerId(),
@@ -33,6 +34,7 @@ public class OrderMapper {
                 .collect(Collectors.toList());
     }
     public ViewOrderDto toViewDto(Order order){
+        order.calculateTotalPrice();
         return new ViewOrderDto(
                 order.getOrderId(),
                 itemMapper.toViewDto(order.getItemGroupList()),

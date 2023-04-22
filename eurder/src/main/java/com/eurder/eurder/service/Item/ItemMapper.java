@@ -33,6 +33,7 @@ public class ItemMapper {
 
 
     public ViewItemGroupReport toViewDto(ItemGroup itemGroup){
+        itemGroup.calculateGroupPrice();
         return new ViewItemGroupReport(
                 itemGroup.getItem().getName(),
                 itemGroup.getOrderedItemAmount(),

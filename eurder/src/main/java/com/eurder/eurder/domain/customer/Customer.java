@@ -10,8 +10,8 @@ import java.util.Objects;
 public class Customer {
    // public static int counter = 0;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_seq")
-    @SequenceGenerator(sequenceName = "customer_id_seq", allocationSize = 1, name = "customer_id_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//GenerationType.SEQUENCE, generator = "customer_id_seq")
+    //@SequenceGenerator(sequenceName = "customer_id_seq", allocationSize = 1, name = "customer_id_seq")
     @Column(name = "id")
     public int id;
     @Column(name = "firstname")

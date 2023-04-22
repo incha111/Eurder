@@ -1,12 +1,11 @@
-create sequence customer_id_seq
-    as integer
-    maxvalue 9999999;
-
-alter sequence customer_id_seq owner to student;
+-- create sequence customer_id_seq start with 1000 increment by 1;
+-- create sequence item_id_seq start with 1000 increment by 1;
+-- create sequence item_group_id_seq start with 1000 increment by 1;
+-- create sequence order_id_seq start with 1000 increment by 1;
 
 create table customer
 (
-    id        integer default nextval('"eurder".customer_id_seq'::regclass) not null
+    id        integer generated always as identity
         primary key,
     firstname varchar(255)                                                 not null,
     lastname  varchar(255)                                                 not null,
@@ -15,11 +14,6 @@ create table customer
     address   varchar(255)                                                 not null,
     phone     varchar(255)                                                 not null
 );
-
-alter table customer
-    owner to student;
-
-alter sequence customer_id_seq owned by customer.id;
 
 create table item
 (
@@ -32,9 +26,6 @@ create table item
     urgency_indicator varchar(255)     not null
 );
 
-alter table item
-    owner to student;
-
 create table "order"
 (
     id          integer generated always as identity
@@ -42,9 +33,6 @@ create table "order"
     customer_id integer not null,
     order_date  date    not null
 );
-
-alter table "order"
-    owner to student;
 
 create table item_group
 (
@@ -57,12 +45,6 @@ create table item_group
     shipping_date       date             not null,
     fk_order_id         integer
         constraint item_group_order_id_foreign
-            references "order"
-            on update set null
-            deferrable initially deferred,
+            references "order",
     item_price          double precision not null
 );
-
-alter table item_group
-    owner to student;
-
