@@ -7,15 +7,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 @Entity
-@Table(name = "order",schema = "eurder")
+@Table(name = "orders")
 public class Order {
     //private static int counter;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int orderId;
-    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
-    @JoinColumn(name = "fk_order_id")
+    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER,mappedBy = "id")
+    //@JoinColumn(name = "fk_order_id")
     private List<ItemGroup> itemGroupList;
     @Column(name = "customer_id")
     private int customerId;

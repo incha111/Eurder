@@ -26,7 +26,7 @@ create table item
     urgency_indicator varchar(255)     not null
 );
 
-create table "order"
+create table orders
 (
     id          integer generated always as identity
         primary key,
@@ -45,6 +45,6 @@ create table item_group
     shipping_date       date             not null,
     fk_order_id         integer
         constraint item_group_order_id_foreign
-            references "order",
+            references orders,
     item_price          double precision not null
 );

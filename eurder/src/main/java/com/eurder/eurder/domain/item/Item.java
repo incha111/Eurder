@@ -1,6 +1,7 @@
 package com.eurder.eurder.domain.item;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Objects;
 @Entity
@@ -12,6 +13,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotEmpty(message = "Item name is mandatory")
     private String name;
     private String description;
     private double price;

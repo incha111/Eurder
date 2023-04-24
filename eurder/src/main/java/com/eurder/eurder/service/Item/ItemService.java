@@ -6,6 +6,7 @@ import com.eurder.eurder.api.item.dto.UpdateItemDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemRepository;
 import com.eurder.eurder.domain.item.ItemRepositoryJpa;
+import com.eurder.eurder.service.exceptions.ItemNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,10 @@ public class ItemService {
         )));
     }
 
-    public ItemDto getItemById(Integer id) {
-        return itemMapper.toDto(itemRepository.findById(id).get());
+    public ItemDto getItemById(Integer itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(()-> new ItemNotFoundException("Item not found for id " +itemId));
+        return itemMapper.toDto(item);
     }
     public ItemDto updateItem(int id, UpdateItemDto updateItemDto){
         Item item = itemRepository.findById(id).get();

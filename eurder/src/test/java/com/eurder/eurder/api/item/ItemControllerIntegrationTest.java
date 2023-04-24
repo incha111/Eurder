@@ -1,34 +1,41 @@
 package com.eurder.eurder.api.item;
 
 import com.eurder.eurder.domain.item.Item;
+import com.eurder.eurder.domain.item.ItemRepository;
 import com.eurder.eurder.domain.item.ItemRepositoryJpa;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles("disable-keycloak")
+@EnableAutoConfiguration
+@AutoConfigureTestDatabase
 class ItemControllerIntegrationTest {
     @LocalServerPort
     private int port;
 
     @Autowired
-    private ItemRepositoryJpa repository;
+    private ItemRepository itemRepository;
 
     @Test
     void whenThereIsOneItemInTheRepository_thenICanRetrieveThisItemById() {
         // GIVEN
         Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2);
-        repository.save(item1);
+        itemRepository.save(item1);
 
         // WHEN
         Item item = RestAssured
@@ -71,7 +78,7 @@ class ItemControllerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
 
-        Assertions.assertThat(repository.getAllItems()).isNotEmpty();
+        Assertions.assertThat(itemRepository.findAll()).isNotEmpty();
     }
     @Test
     void whenTheRepositoryIsEmpty_thenIReceiveA404WhenRequestingAItemById() {
@@ -89,17 +96,17 @@ class ItemControllerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.NOT_FOUND.value());
 
-        Assertions.assertThat(repository.getAllItems()).isEmpty();
+        Assertions.assertThat(itemRepository.findAll()).isEmpty();
 
     }
     @Test
-    void whenTheRepositoryContains2Customers_thenICanRetrieveThemViaTheAPI(){
+    void whenTheRepositoryContains2Items_thenICanRetrieveThemViaTheAPI(){
         //given
         Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2);
         Item item2 = new Item("Ping pong ballen","Ping pong ballen (per 6)",2,2);
 
-        repository.save(item1);
-        repository.save(item2);
+        itemRepository.save(item1);
+        itemRepository.save(item2);
 
         //when
         List<Item> list = RestAssured

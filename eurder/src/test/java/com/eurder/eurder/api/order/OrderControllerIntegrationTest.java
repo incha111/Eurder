@@ -2,23 +2,27 @@ package com.eurder.eurder.api.order;
 
 import com.eurder.eurder.api.item.dto.CreateItemGroupDto;
 import com.eurder.eurder.api.order.dto.CreateOrderDto;
+import com.eurder.eurder.api.order.dto.OrderDto;
 import com.eurder.eurder.domain.customer.Customer;
+import com.eurder.eurder.domain.customer.CustomerRepository;
 import com.eurder.eurder.domain.customer.CustomerRepositoryJpa;
-import com.eurder.eurder.domain.item.Item;
-import com.eurder.eurder.domain.item.ItemGroup;
-import com.eurder.eurder.domain.item.ItemRepositoryJpa;
+import com.eurder.eurder.domain.item.*;
 import com.eurder.eurder.domain.order.Order;
 import com.eurder.eurder.domain.order.OrderRepository;
+import com.eurder.eurder.service.order.OrderMapper;
 import com.eurder.eurder.service.order.OrderService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +30,9 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles("disable-keycloak")
+@EnableAutoConfiguration
+@AutoConfigureTestDatabase
 class OrderControllerIntegrationTest {
     @LocalServerPort
     private int port;
@@ -33,53 +40,44 @@ class OrderControllerIntegrationTest {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private ItemRepositoryJpa itemRepository;
+    private OrderMapper orderMapper;
     @Autowired
-    private CustomerRepositoryJpa customerRepository;
+    private ItemRepository itemRepository;
+    @Autowired
+    private ItemGroupRepository itemGroupRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Autowired
-    private OrderService service;
+    private OrderService orderService;
 
-//    @Test
-//    void whenThereIsOneOrderInTheRepository_thenICanRetrieveThisOrderById() {
-//        // GIVEN
-//        Item item1 = new Item("paprika chips","paprika chips",1.5,5);
-//        Item item2 = new Item("pickels chips","pickels chips",1.5,7);
-//
-//        ItemGroup itemGroup1 = new ItemGroup(item1,3, LocalDate.now().plusDays(1),4.5);
-//        ItemGroup itemGroup2 = new ItemGroup(item2,2,LocalDate.now().plusDays(1),3.0);
-//
-//        List<ItemGroup> itemGroupList1 = new ArrayList<>();
-//        itemGroupList1.add(itemGroup1);
-//        itemGroupList1.add(itemGroup2);
-//
-//        Order order1 = new Order(LocalDate.now(),1,itemGroupList1,7.5);
-//        orderRepository.save(order1);
-//
-//
-//        // WHEN
-//        Order order = RestAssured
-//                .given()
-//                .auth()
-//                .preemptive()
-//                .basic("admin@eurder.com","123")
-//                .contentType(ContentType.JSON)
-//                //.header(new Header("Authorization", "Basic username:password"))
-//                //.auth().preemptive().basic("username", "password")
-//                .log().all()
-//                .when()
-//                .port(port)
-//                .get("/orders/" + order1.getOrderId()) // http://localhost:???/orders/1
-//                // THEN
-//                .then()
-//                .log().all()
-//                .assertThat()
-//                .statusCode(HttpStatus.OK.value()) // status 200
-//                .extract()
-//                .as(Order.class); // Get a contact from the system
-//        //THEN
-//        Assertions.assertThat(order).isEqualTo(order1);
-//    }
+    @Test
+    void whenThereIsOneOrderInTheRepository_thenICanRetrieveThisOrderById() {
+
+        // GIVEN
+        // WHEN
+        OrderDto orderDto = RestAssured
+                .given()
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com","123")
+                .contentType(ContentType.JSON)
+                //.header(new Header("Authorization", "Basic username:password"))
+                //.auth().preemptive().basic("username", "password")
+                .log().all()
+                .when()
+                .port(port)
+                .get("/orders/" + 1) // http://localhost:???/orders/1
+                // THEN
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value()) // status 200
+                .extract()
+                .as(OrderDto.class); // Get a contact from the system
+        //THEN
+        Assertions.assertThat(orderDto).isEqualTo(orderMapper.toDto(orderRepository.findById(1).get()));
+    }
 //    @Test
 //    void whenIPostAnOrder_thenTheRepositoryContainsThisOrder() throws CloneNotSupportedException {
 //        Item item1 = new Item("Ping pong net","A net to install on a ping pong table",15.0,2);
@@ -100,7 +98,7 @@ class OrderControllerIntegrationTest {
 //        CreateOrderDto createOrderDto = new CreateOrderDto(
 //                createItemGroupDtoList,customer1.getId(),LocalDate.now()
 //        );
-//        service.createOrder(createOrderDto);
+//        orderService.createOrder(createOrderDto);
 //
 //        RestAssured
 //                .given()
@@ -114,7 +112,7 @@ class OrderControllerIntegrationTest {
 //                //.assertThat()
 //                //.statusCode(HttpStatus.CREATED.value());
 //
-//        Assertions.assertThat(orderRepository.getAllOrders()).isNotEmpty();
+//        Assertions.assertThat(orderRepository.findById(2)).isNotEmpty();
 //    }
 //    @Test
 //    void whenTheRepositoryIsEmpty_thenIReceiveA404WhenRequestingAnOrderById() {
