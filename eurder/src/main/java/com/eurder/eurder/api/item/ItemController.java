@@ -6,8 +6,11 @@ import com.eurder.eurder.api.item.dto.UpdateItemDto;
 import com.eurder.eurder.service.Item.ItemService;
 import com.eurder.eurder.service.security.Feature;
 import com.eurder.eurder.service.security.SecurityService;
+import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +35,7 @@ public class ItemController {
     }
     @PostMapping(value = "register", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto createItem(@RequestBody CreateItemDto createItemDto,@RequestHeader String authorization){
+    public ItemDto createItem(@RequestBody @Valid CreateItemDto createItemDto, @RequestHeader String authorization){
         securityService.validateAuthorization(authorization, Feature.ADD_ITEM);
         return itemService.createItem(createItemDto);
     }

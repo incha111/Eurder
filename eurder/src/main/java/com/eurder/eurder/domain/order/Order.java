@@ -1,27 +1,43 @@
 package com.eurder.eurder.domain.order;
 
 import com.eurder.eurder.domain.item.ItemGroup;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-
+@Entity
+@Table(name = "orders")
 public class Order {
-    private static int counter;
-    private final int orderId;
-    private final List<ItemGroup> itemGroupList;
-    //private final Customer customer;
-    private final int customerId;
-    private final LocalDate orderDate;
-    private final double totalPrice;
+    //private static int counter;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int orderId;
+    @OneToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER,mappedBy = "id")
+    //@JoinColumn(name = "fk_order_id")
+    private List<ItemGroup> itemGroupList;
+    @Column(name = "customer_id")
+    private int customerId;
+    @Column(name = "order_date")
+    private LocalDate orderDate;
+    @Transient
+    private double totalPrice;
 
-    public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList, double totalPrice) {
-        this.orderId = ++counter;
-        this.orderDate = orderDate;
-        this.customerId = customerId;
-        this.itemGroupList = itemGroupList;
-        this.totalPrice = totalPrice;
+    public Order() {
     }
+
+//    public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList, double totalPrice) {
+//        this.orderDate = orderDate;
+//        this.customerId = customerId;
+//        this.itemGroupList = itemGroupList;
+//        this.totalPrice = totalPrice;
+//    }
+public Order(LocalDate orderDate, int customerId, List<ItemGroup> itemGroupList) {
+    this.orderDate = orderDate;
+    this.customerId = customerId;
+    this.itemGroupList = itemGroupList;
+}
 
     public int getOrderId() {
         return orderId;
@@ -57,11 +73,14 @@ public class Order {
     }
     /*public void addItemGroup(ItemGroup itemGroup){
         itemGroupList.add(itemGroup);
-    }
-
-    private double calculateTotalPrice(){
-        return itemGroupList.stream()
-                .map(i -> i.getGroupPrice())
-                .reduce(0.0,(a,b) -> a + b);
     }*/
+
+    public void calculateTotalPrice(){
+        this.totalPrice = itemGroupList.stream()
+                .map(i -> {
+                    i.calculateGroupPrice();
+                    return i.getGroupPrice();
+                })
+                .reduce(0.0,(a,b) -> a + b);
+    }
 }

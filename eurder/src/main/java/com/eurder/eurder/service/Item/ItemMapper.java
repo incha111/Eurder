@@ -2,6 +2,7 @@ package com.eurder.eurder.service.Item;
 
 import com.eurder.eurder.api.item.dto.ItemDto;
 import com.eurder.eurder.api.item.dto.ViewItemGroupReport;
+import com.eurder.eurder.api.order.dto.CreateOrderDto;
 import com.eurder.eurder.domain.item.Item;
 import com.eurder.eurder.domain.item.ItemGroup;
 import com.eurder.eurder.domain.item.UrgencyIndicator;
@@ -30,7 +31,9 @@ public class ItemMapper {
                 .collect(Collectors.toList());
     }
 
+
     public ViewItemGroupReport toViewDto(ItemGroup itemGroup){
+        itemGroup.calculateGroupPrice();
         return new ViewItemGroupReport(
                 itemGroup.getItem().getName(),
                 itemGroup.getOrderedItemAmount(),

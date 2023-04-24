@@ -1,24 +1,32 @@
 package com.eurder.eurder.domain.item;
 
-import java.util.Objects;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
+import java.util.Objects;
+@Entity
+@Table(name = "item")
 public class Item {
     public static final int STOCK_LOW = 5;
     public static final int STOCK_MEDIUM = 10;
-    public static int counter;
-    private final int id;
+    //public static int counter;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @NotEmpty(message = "Item name is mandatory")
     private String name;
     private String description;
     private double price;
+    @Column(name = "stock_amount")
     private int stockAmount;
+    @Column(name = "urgency_indicator")
     private UrgencyIndicator urgencyIndicator;
 
     public Item() {
-        this.id = ++counter;
+
     }
 
     public Item(String name, String description, double price, int stockAmount) {
-        this.id = ++counter;
         this.name = name;
         this.description = description;
         this.price = price;

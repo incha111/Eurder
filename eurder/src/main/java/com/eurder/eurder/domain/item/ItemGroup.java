@@ -1,22 +1,40 @@
 package com.eurder.eurder.domain.item;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "item_group")
 public class ItemGroup {
 
-    private static int counter;
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @OneToOne
+    @JoinColumn(name = "item_id")
     private Item item;
-    private final int orderedItemAmount;
-    private final LocalDate shippingDate;
-    private final double groupPrice;
+    @Column(name = "item_price")
+    private double itemPrice;
+    @Column(name = "ordered_item_amount")
+    private int orderedItemAmount;
+    @Column(name = "shipping_date")
+    private LocalDate shippingDate;
+    @Column(name = "fk_order_id")
+    private int orderId;
+    @Transient
+    private double groupPrice;
 
-    public ItemGroup(Item item, int orderedItemAmount, LocalDate shippingDate, double groupPrice) {
-        this.id = ++counter;
+    public ItemGroup() {
+    }
+
+    public ItemGroup(Item item, int orderedItemAmount, LocalDate shippingDate,double groupPrice) {
         this.item = item;
         this.orderedItemAmount = orderedItemAmount;
         this.shippingDate = shippingDate;
         this.groupPrice = groupPrice;
+        this.itemPrice = item.getPrice();
+        calculateGroupPrice();
     }
 
     public int getId() {
@@ -25,6 +43,10 @@ public class ItemGroup {
 
     public Item getItem() {
         return item;
+    }
+
+    public double getItemPrice() {
+        return itemPrice;
     }
 
     public int getOrderedItemAmount() {
@@ -39,4 +61,11 @@ public class ItemGroup {
         return groupPrice;
     }
 
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public void calculateGroupPrice(){
+        this.groupPrice =orderedItemAmount * this.itemPrice;
+    }
 }

@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 class CustomerServiceTest {
     CustomerRepository customerRepositoryMock;
@@ -61,6 +62,10 @@ class CustomerServiceTest {
     void getCustomerById_verifyMethodGetCustomerByIdIsCalledOnCustomerService() {
         //given
         int customerId = 1;
+        Customer customer = new Customer("Vincent", "Bommery", "vbo@gmail.com", "123", "Vincent's address", "Vincent's  phone");
+        customerRepositoryMock.save(customer);
+        Mockito.when(customerRepositoryMock.findById(1))
+                .thenReturn(Optional.of(customer)).getMock();
 
         //when
         customerService.getCustomerById(customerId);
@@ -74,15 +79,15 @@ class CustomerServiceTest {
         //given
         Customer customer1 = new Customer("Louis","Koppens","louis.Koppens@gmail.com","123","BeCentral 2","123456");
         Customer customer2 = new Customer("Lisa","Martens","lisa.martens@gmail.com","123","BeCentral 1","654321");
-        //Mockito.when(customerRepositoryMock.findById(customer1.getId()))
-                //.thenReturn(customer1)
+        Mockito.when(customerRepositoryMock.findById(customer1.getId()))
+                .thenReturn(Optional.of(customer1)).getMock()
                 ;
 
         //when
         Customer customer = customerRepositoryMock.findById(customer1.getId()).get();
 
         //then
-        Assertions.assertThat(customer).isEqualTo(customerRepositoryMock.getReferenceById(customer1.getId()));
+        Assertions.assertThat(customer).isEqualTo(customerRepositoryMock.findById(customer2.getId()).get());
     }
 
 //    @Test

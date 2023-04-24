@@ -4,7 +4,7 @@ import com.eurder.eurder.api.customer.dto.CreateCustomerDto;
 import com.eurder.eurder.api.customer.dto.CustomerDto;
 import com.eurder.eurder.domain.customer.Customer;
 import com.eurder.eurder.domain.customer.CustomerRepository;
-import com.eurder.eurder.domain.customer.CustomerRepositoryJpa;
+import com.eurder.eurder.service.exceptions.CustomerNotFoundException;
 import com.eurder.eurder.service.security.Role;
 import com.eurder.eurder.service.security.SecurityService;
 import com.eurder.eurder.service.security.User;
@@ -30,7 +30,9 @@ public class CustomerService {
         return customerMapper.toDto(customerRepository.findAll());
     }
     public CustomerDto getCustomerById(int customerId){
-        return customerMapper.toDto(customerRepository.findById(customerId).get());
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found for id " + customerId));
+        return customerMapper.toDto(customer);
     }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto){
